@@ -1,4 +1,5 @@
 //import libs
+const helper = require('./helper.js')
 const express = require('express')
 const hbs = require('express-handlebars')
 
@@ -30,7 +31,7 @@ app.get('/roll',
         let dicecount = 2
         let dices = new Array()
         for(i = 0; i < dicecount; i++){
-            dices.push(getRandInt(1,6))
+            dices.push(helper.getRandInt(1,6))
         }
         
         //send response
@@ -71,9 +72,3 @@ app.listen(
     }
 )
 
-//helper function to get rand number
-function getRandInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive 
-  }
