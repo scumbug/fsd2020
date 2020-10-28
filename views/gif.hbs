@@ -1,5 +1,5 @@
 <h1><a href="/">Search Again!</a></h1>
-<h2>Here are your results</h2>
+<h2>Here are your {{ n }} result(s)</h2>
 {{#each gifs}}
-<img src="{{ this }}"> <br />
+<a href="{{ this.url }}" target="_blank"><img src="{{ this.src }}" alt="{{ this.alt }}"></a>
 {{/each}}

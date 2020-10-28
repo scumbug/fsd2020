@@ -8,6 +8,13 @@ body {
     margin-right: -50%;
     transform: translate(-50%, -50%)
 }
-input,button {
+input,button,p {
     padding: 10px;
+    margin-bottom: 10px;
+}
+input[type="number"] {
+    width: 40px;
+}
+.giphylogo {
+    width: 100%;
 }

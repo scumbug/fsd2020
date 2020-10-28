@@ -2,7 +2,7 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
-const helper = require('./helper.js')
+const helper = require('./helper.js') //self written helper functions
 
 const express = require('express')
 const hbs = require('express-handlebars')
@@ -38,19 +38,42 @@ app.get('/',
     }
 )
 
-//grab gifs
+/*
+
+Grab gifs.
+
+gifJSON is a nested await that will query the endpoint then convert to json
+
+if only need one arr to be passed to hbs to handle can use the below instead of a for loop
+const srcs = await gifJSON.data.map(gifJSON => gifJSON.images.fixed_height.url)
+
+*/
+
 app.get('/search',
     async (req,res) => {
-        const param = req.query.q
+        const q = req.query.q
+        const n = req.query.n
         let gifs = new Array()
-        let gifJSON = await fetch(withQuery(ENDPOINT,{ q: param, api_key: KEY, limit: 10}))
-        gifJSON = await gifJSON.json()
-        for(const gif of gifJSON.data){
-            await gifs.push(gif.images.downsized_large.url)
+        try {
+            let gifJSON = await (await searchGifs(q,n)).json()
+
+            //oop to extract all relevant data to be passed to render engine
+            for(const gif of gifJSON.data){
+                await gifs.push(
+                    {
+                        "src":gif.images.fixed_height.url,
+                        "alt":gif.title,
+                        "url":gif.url
+                    }
+                )
+            }
+        } catch (e) {
+            console.error(e)
+            return Promise.reject(e)
         }
         res.status(200)
         res.type('text/html')
-        res.render('gif', { gifs })
+        res.render('gif', { gifs , n })
     }
 )
 
@@ -69,3 +92,8 @@ if(KEY)
     )
 else
     console.error('No API KEY')
+
+//helper functions
+const searchGifs = (q,limit) => {
+    return fetch(withQuery(ENDPOINT,{ q, api_key: KEY, limit }))
+}
