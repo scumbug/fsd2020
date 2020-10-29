@@ -7,8 +7,7 @@ const getRandInt = (min, max) => {
 
 //pretty print dates
 const getDate = () => {
-    let date = new Date().toString().replace(/ GMT.+/, '')
-    return date
+    return date = new Date().toString().replace(/ GMT.+/, '')
 }
 
 module.exports = { getRandInt, getDate, }

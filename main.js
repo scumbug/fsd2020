@@ -1,6 +1,5 @@
 //import libs & env
-const dotenv = require("dotenv")
-dotenv.config()
+require("dotenv").config()
 
 const helper = require('./helper.js') //self written helper functions
 
@@ -51,29 +50,36 @@ const srcs = await gifJSON.data.map(gifJSON => gifJSON.images.fixed_height.url)
 
 app.get('/search',
     async (req,res) => {
-        const q = req.query.q
-        const n = req.query.n
-        let gifs = new Array()
         try {
-            let gifJSON = await (await searchGifs(q,n)).json()
+            let gifs = new Array()
+            let gifJSON = await (await searchGifs(req.query.q,req.query.n)).json()
 
-            //oop to extract all relevant data to be passed to render engine
-            for(const gif of gifJSON.data){
-                await gifs.push(
+            //loop to extract all relevant data to be passed to render engine
+            for(gif of gifJSON.data){
+                gifs.push(
                     {
-                        "src":gif.images.fixed_height.url,
-                        "alt":gif.title,
-                        "url":gif.url
+                        "src": gif.images.fixed_height.url,
+                        "alt": gif.title,
+                        "url": gif['url'] //use this to get null value if key does not exist or keys thats not valid naming scheme of JS
                     }
                 )
             }
+
+            /* alternatively we can use map()
+            const gifs = gifJSON.data.map(
+                (gif) => {
+                    return { src: gif.images.fixed_height.url, alt: gif.tile, url: gif.url }
+                }
+            )
+            */
+
+            res.status(200)
+            res.type('text/html')
+            res.render('gif', { gifs , q: req.query.q, n: req.query.n , e: !!gifs.length})
         } catch (e) {
             console.error(e)
             return Promise.reject(e)
         }
-        res.status(200)
-        res.type('text/html')
-        res.render('gif', { gifs , n })
     }
 )
 
@@ -94,6 +100,4 @@ else
     console.error('No API KEY')
 
 //helper functions
-const searchGifs = (q,limit) => {
-    return fetch(withQuery(ENDPOINT,{ q, api_key: KEY, limit }))
-}
+const searchGifs = (q,limit) => { return fetch(withQuery(ENDPOINT,{ q, api_key: KEY, limit })) }
