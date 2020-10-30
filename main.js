@@ -21,13 +21,14 @@ app.set('view engine', 'hbs')
 //mount static resources
 app.use(express.static(`${__dirname}/public`))
 
+let db = {}
+
 //setup landing page
 app.get('/',
     (req, res) => {
-        const cache = [];
         res.status(200)
         res.type('text/html')
-        res.render('index', { cache: JSON.stringify(cache) })
+        res.render('index')
     }
 )
 
@@ -36,23 +37,24 @@ app.post('/search',
     express.urlencoded({ extended: true }),
     async (req, res) => {
         try {
-            newsJSON = await (await grabNews(req.body.q, req.body.country, req.body.category)).json()
-            //console.log('cache is empty, pulling from api')
-            const articles = newsJSON.articles.map(
-                (article) => {
-                    return {
-                        title: article.title,
-                        description: article.description,
-                        url: article.url,
-                        urlToImage: article.urlToImage,
-                        publishedAt: article.publishedAt,
-                        q: req.body.q,
+            if (db[req.body.q] == null) {
+                newsJSON = await (await grabNews(req.body.q, req.body.country, req.body.category)).json()
+                console.log('Query not saved, pulling from api')
+                db[req.body.q] = newsJSON.articles.map(
+                    (article) => {
+                        return {
+                            title: article.title,
+                            description: article.description,
+                            url: article.url,
+                            urlToImage: article.urlToImage,
+                            publishedAt: article.publishedAt,
+                        }
                     }
-                }
-            )
+                )
+            }
             res.status(200)
             res.type('text/html')
-            res.render('index', { articles, q: req.query.q, })
+            res.render('index', { articles: db[req.body.q] })
         } catch (e) {
             console.error(e)
             return Promise.reject(e)
