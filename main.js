@@ -23,18 +23,21 @@ app.use(express.static(`${__dirname}/public`))
 
 //setup landing page
 app.get('/',
-    (req,res) => {
+    (req, res) => {
+        const cache = [];
         res.status(200)
         res.type('text/html')
-        res.render('index')
+        res.render('index', { cache: JSON.stringify(cache) })
     }
 )
 
 //search
-app.get('/search',
-    async (req,res) => {
+app.post('/search',
+    express.urlencoded({ extended: true }),
+    async (req, res) => {
         try {
-            newsJSON = await( await grabNews(req.query.q, req.query.country, req.query.category)).json()
+            newsJSON = await (await grabNews(req.body.q, req.body.country, req.body.category)).json()
+            //console.log('cache is empty, pulling from api')
             const articles = newsJSON.articles.map(
                 (article) => {
                     return {
@@ -43,12 +46,13 @@ app.get('/search',
                         url: article.url,
                         urlToImage: article.urlToImage,
                         publishedAt: article.publishedAt,
+                        q: req.body.q,
                     }
                 }
             )
             res.status(200)
             res.type('text/html')
-            res.render('index', { articles, q: req.query.q })
+            res.render('index', { articles, q: req.query.q, })
         } catch (e) {
             console.error(e)
             return Promise.reject(e)
@@ -58,7 +62,7 @@ app.get('/search',
 
 //redirect non routed to landing page
 app.use(
-    (_req,res) => {
+    (_req, res) => {
         res.redirect('/')
     }
 )
@@ -66,10 +70,11 @@ app.use(
 //start server
 app.listen(
     PORT,
-    () => { console.info(`App has started on ${PORT} at ${helper.getDate()}`)}
+    () => { console.info(`App has started on ${PORT} at ${helper.getDate()}`) }
 )
 
-const grabNews = (q,country,category) => {
+//helper function to grab news
+const grabNews = (q, country, category) => {
     return fetch(withQuery(
         ENDPOINT,
         {
