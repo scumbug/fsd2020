@@ -37,6 +37,11 @@ app.post('/search',
     express.urlencoded({ extended: true }),
     async (req, res) => {
         try {
+            if(helper.minutesDiff(new Date(), db.ttl) > 15)
+            {
+                console.log('TTL expired, clearing db')
+                db = {}
+            }
             if (db[req.body.q] == null) {
                 newsJSON = await (await grabNews(req.body.q, req.body.country, req.body.category)).json()
                 console.log('Query not saved, pulling from api')
@@ -51,6 +56,7 @@ app.post('/search',
                         }
                     }
                 )
+                db.ttl = new Date()
             }
             res.status(200)
             res.type('text/html')
@@ -77,13 +83,15 @@ app.listen(
 
 //helper function to grab news
 const grabNews = (q, country, category) => {
-    return fetch(withQuery(
-        ENDPOINT,
-        {
-            country,
-            category,
-            q,
-            apiKey: KEY,
-        }
-    ))
+    return fetch(
+        withQuery(
+            ENDPOINT,
+            {
+                country,
+                category,
+                q,
+            }
+        ),
+        { headers: { 'X-Api-Key': KEY } }
+    )
 }

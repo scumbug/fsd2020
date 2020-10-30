@@ -10,4 +10,16 @@ const getDate = () => {
     return date = new Date().toString().replace(/ GMT.+/, '')
 }
 
-module.exports = { getRandInt, getDate, }
+function secondsDiff(d1, d2) {
+    let millisecondDiff = d2 - d1;
+    let secDiff = Math.floor( ( d2 - d1) / 1000 );
+    return secDiff;
+ } 
+
+const minutesDiff = (d1, d2) => {
+    let seconds = secondsDiff(d1, d2);
+    let minutesDiff = Math.floor( seconds / 60 );
+    return minutesDiff;
+}
+
+module.exports = { getRandInt, getDate, minutesDiff}
