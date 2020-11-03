@@ -16,7 +16,7 @@ const db = mysql.createPool({
     password: process.env.DB_PWD,
     database: 'leisure',
     waitForConnections: true,
-    connectionLimit: process.env.DB_CONN_LIMIT || 2,
+    connectionLimit: process.env.DB_CONN_LIMIT || 5,
     timezone: '+08:00'
 })
 

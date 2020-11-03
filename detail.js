@@ -20,17 +20,29 @@ module.exports = (db) => {
                     result[0]['rating'] += '★'
                 }
                 res.status(200)
-                res.type('text/html')
-                res.render('detail', { result: result[0] })
+                res.format({
+                    'text/html': () => {
+                        res.type('text/html')
+                        res.render('detail', { result: result[0] })
+                    },
+                    'application/json': () => {
+                        res.type('application/json')
+                        res.json(result)
+                    },
+                    'default': () => {
+                        res.type('text/plain')
+                        res.send(JSON.stringify(result))
+                    }
+                })
             } catch (e) {
                 res.status(500)
                 res.type('text/html')
                 res.send(JSON.stringify(e))
+                return Promise.reject(e)
             } finally {
                 conn.release()
             }
         }
     )
     return router
-
 }
