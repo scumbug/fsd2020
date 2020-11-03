@@ -1,0 +1,9 @@
+<form action="/category" method="get">
+<label for="q">Select Application Category</label>
+    <select name="q">
+        {{#each results}}
+        <option value="{{ this.category }}">{{ this.category }}</option>
+        {{/each}}
+    </select>
+    <button type="submit">List</button>
+</form>
