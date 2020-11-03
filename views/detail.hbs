@@ -1,0 +1,22 @@
+{{#with result }}
+<div class="jumbotron">
+    <h1 class="display-4">{{name}}</h1>
+    <div class="d-flex">
+        <div class="col-md-auto">
+            <img class="img-thumbnail w-100" src="{{image}}" alt="">
+        </div>
+        <div class="col">
+            <p class="lead">{{{summary}}}</p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <p class="lead">Rating: {{rating}}</p>
+    <p class="lead">Language: {{lang}}</p>
+    <div class="d-flex justify-content-between mt-5">
+        <a class="btn btn-primary" href="/" role="button">Return</a>
+        {{#if official_site}}
+        <a class="btn btn-primary" href="{{official_site}}" role="button">Learn more</a>
+        {{/if}}
+    </div>
+</div>
+{{/with}}
