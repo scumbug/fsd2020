@@ -22,4 +22,20 @@ const minutesDiff = (d1, d2) => {
     return minutesDiff;
 }
 
-module.exports = { getRandInt, getDate, minutesDiff}
+const getQuery = (sql, pool) => {
+    const result = async (params) => {
+        const conn = await pool.getConnection()
+        try {
+            const [res] = await pool.query(sql,params)
+            console.log('getting query')
+            return res
+        } catch(e) {
+            return Promise.reject(e)
+        } finally {
+            conn.release()
+        }
+    }
+    return result
+}
+
+module.exports = { getRandInt, getDate, minutesDiff, getQuery }

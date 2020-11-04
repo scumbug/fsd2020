@@ -1,14 +1,20 @@
+//import libs
+const { getQuery } = require('./helper')
 const express = require('express')
-const SQL_GET_MOVIE_DEETS = 'SELECT * FROM tv_shows WHERE tvid = ?'
+
+//SQL constants
+const SQL_GET_SHOW_DEETS = 'SELECT * FROM tv_shows WHERE tvid = ?'
+
+
 module.exports = (db) => {
+    const getShowDeets = getQuery(SQL_GET_SHOW_DEETS,db)
     const router = express.Router()
 
     router.get('/detail/:tvid',
         async (req, res) => {
-            const conn = await db.getConnection()
             try {
-                let [result] = await db.query(SQL_GET_MOVIE_DEETS, req.params.tvid)
-                if (result[0] == null) {
+                let result = await getShowDeets(req.params.tvid)
+                if (result == null) {
                     res.status(404)
                     res.type('text/html')
                     res.send('404 Show not Found')
@@ -39,8 +45,6 @@ module.exports = (db) => {
                 res.type('text/html')
                 res.send(JSON.stringify(e))
                 return Promise.reject(e)
-            } finally {
-                conn.release()
             }
         }
     )
