@@ -10,11 +10,11 @@ const PORT = (parseInt(process.argv[2]) > 1024 && parseInt(process.argv[2])) || 
 
 //setup DB
 const db = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.CLEARDB_DATABASE_URL || process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PWD,
-    database: 'leisure',
+    database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: process.env.DB_CONN_LIMIT || 5,
     timezone: '+08:00'
