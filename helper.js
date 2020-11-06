@@ -21,7 +21,7 @@ const getQuery = (sql, pool) => {
     return result
 }
 
-const genAlpha = (first,last) => {
+const ASCIIArr = (first,last) => {
     let arr = []
     for(i = first.charCodeAt(0);i <= last.charCodeAt(0); i++)
         arr.push(String.fromCharCode(i))
@@ -41,4 +41,8 @@ const getNYT = async (title) => {
     return result
 }
 
-module.exports = { getDate, getQuery, genAlpha, getNYT }
+const splitString = (str,delimiter) => {
+        return str.split(delimiter)
+}
+
+module.exports = { getDate, getQuery, ASCIIArr, getNYT, splitString }

@@ -4,11 +4,7 @@ const express = require('express')
 const hbs = require('express-handlebars')
 const mysql = require('mysql2/promise')
 const morgan = require('morgan')
-const { getDate, genAlpha, getQuery, getNYT } = require('./helper')
-
-/*
-    constants
-*/
+const { getDate, ASCIIArr, getQuery, getNYT } = require('./helper')
 
 //globals
 const PORT = (parseInt(process.argv[2]) > 1024 && parseInt(process.argv[2])) || (parseInt(process.env.PORT) > 1024 && parseInt(process.env.PORT)) || 3000
@@ -37,13 +33,14 @@ const app = express()
 app.engine('hbs', hbs({ defaultLayout: 'default.hbs' }))
 app.set('view engine', 'hbs')
 
-//routing
+//logger
+//app.use(morgan('combined'))
 
 //main nav page
 app.get('/', (req, res) => {
 
-    const alpha = genAlpha('A', 'Z')
-    const num = "0123456789".split("")
+    const alpha = ASCIIArr('A', 'Z')
+    const num = ASCIIArr('0', '9')
 
     res.status(200)
     res.type('text/html')
@@ -68,7 +65,7 @@ app.get(['/catalog/:alpha', '/catalog/:alpha/:p'], async (req, res) => {
         if (p > pages || p <= 0) {
             res.status(404)
             res.type('text/html')
-            res.send('404 Page not Found')
+            res.render('error', {code: '404 Page not Found'})
             return
         }
         const offset = (p == 1) ? 0 : (p - 1) * 10
@@ -92,19 +89,47 @@ app.get(['/catalog/:alpha', '/catalog/:alpha/:p'], async (req, res) => {
 
 //book details
 app.get('/detail/:book_id', async (req, res) => {
-    //render book metadata
-
     //declare query functions
     const getBookDeets = await getQuery(SQL_GET_BOOK_DEETS, db)
 
     //logic
     try {
-        const [result] = await getBookDeets(req.params.book_id)
-        //handle JSON transforming here
-
-        res.status(200)
-        res.type('text/html')
-        res.render('detail', { result })
+        let [result] = await getBookDeets(req.params.book_id)
+        if (result) {
+            //handle JSON transforming here
+            result.authors = result.authors.split("|")
+            result.genres = result.genres.split("|")
+            res.status(200)
+            res.type('text/html')
+            res.format({
+                'text/html': () => {
+                    res.type('text/html')
+                    res.render('detail', { result })    
+                },
+                'application/json': () => {
+                    res.type('application/json')
+                    res.json({
+                        bookId: result.bookId,
+                        title: result.title,
+                        authors: result.authors,
+                        summary: result.description,
+                        pages: result.pages,
+                        rating: result.rating,
+                        ratingCount: result.rating_count,
+                        genre: result.genres,
+                    })
+                },
+                'default': () => {
+                    res.status(406)
+                    res.type('text/plain')
+                    res.send('406 Not Acceptable')
+                }
+            })
+        } else {
+            res.status(404)
+            res.type('text/html')
+            res.render('error', {code: '404 Page not Found'})
+        }
     } catch (e) {
         Promise.reject(e)
     }
@@ -116,24 +141,33 @@ app.post('/detail/:book_id/reviews',
     async (req, res) => {
         //fetch and render reviews
         try {
-            const results = await (await getNYT(req.body.title)).results
-            if (results.length) {
+            const title = req.body.title
+            const q = await getNYT(title)
+            if (q.results) {
                 //process review
                 res.status(200)
                 res.type('text/html')
-                res.render('reviews', { results })
+                res.render('reviews', { q, title, authors: req.body.authors })
 
             } else {
-                res.status(200)
+                res.status(204)
                 res.type('text/html')
-                res.send('no reviews')
+                res.render('reviews', { noReviews: false })
             }
         } catch (e) {
             Promise.reject(e)
         }
     })
+
 //mount static resources
 app.use(express.static(`${__dirname}/static`))
+
+//404 everything else
+app.use((_req, res) => {
+    res.status(404)
+    res.type('text/html')
+    res.render('error', {code: '404 Page not found'})
+})
 
 //start server
 db.getConnection()
@@ -144,9 +178,14 @@ db.getConnection()
     .then(ans => {
         console.info('DB is online!')
         ans[0].release()
-        app.listen(
-            PORT,
-            console.info(`App has started on ${PORT} at ${getDate()}`)
-        )
+        if (process.env.NYT_KEY) {
+            app.listen(
+                PORT,
+                console.info(`App has started on ${PORT} at ${getDate()}`)
+            )
+        } else { next() }
     })
-    .catch(e => { console.error(e) })
+    .catch(e => {
+        console.error('Cant start server, check DB or API KEY')
+        process.exit(1)
+    })

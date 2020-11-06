@@ -1,7 +1,15 @@
-{{#each alpha}}
-<a href="/catalog/{{this}}" class="btn btn-primary" role="button">{{this}}</a>
-{{/each}}
+<div class="row">
+    <h1>Goodreads Index</h1>
+</div>
 
-{{#each num}}
-<a href="/catalog/{{this}}" class="btn btn-primary" role="button">{{this}}</a>
-{{/each}}
+<div class="row row-cols-5">
+    {{#each alpha}}
+        <a href="/catalog/{{this}}" class="btn btn-primary m-2 p-3" role="button">{{this}}</a>
+    {{/each}}
+</div>
+
+<div class="row row-cols-5">
+    {{#each num}}
+    <a href="/catalog/{{this}}" class="btn btn-primary m-2 p-3" role="button">{{this}}</a>
+    {{/each}}
+</div>
