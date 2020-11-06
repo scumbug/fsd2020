@@ -6,6 +6,7 @@ const getDate = () => {
     return date = new Date().toString().replace(/ GMT.+/, '')
 }
 
+//query DB
 const getQuery = (sql, pool) => {
     const result = async (params) => {
         const conn = await pool.getConnection()
@@ -21,6 +22,7 @@ const getQuery = (sql, pool) => {
     return result
 }
 
+//helper function for generating ASCII array
 const ASCIIArr = (first,last) => {
     let arr = []
     for(i = first.charCodeAt(0);i <= last.charCodeAt(0); i++)
@@ -28,6 +30,7 @@ const ASCIIArr = (first,last) => {
     return arr
 }
 
+//query NYT API
 const getNYT = async (title) => {
     //setup Auth
     const KEY = process.env.NYT_KEY
@@ -41,8 +44,4 @@ const getNYT = async (title) => {
     return result
 }
 
-const splitString = (str,delimiter) => {
-        return str.split(delimiter)
-}
-
-module.exports = { getDate, getQuery, ASCIIArr, getNYT, splitString }
+module.exports = { getDate, getQuery, ASCIIArr, getNYT }
