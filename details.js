@@ -29,7 +29,7 @@ module.exports = (db) => {
                     'application/json': () => {
                         res.type('application/json')
                         res.json({
-                            bookId: result.bookId,
+                            bookId: result.book_id,
                             title: result.title,
                             authors: result.authors,
                             summary: result.description,

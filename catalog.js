@@ -12,24 +12,26 @@ module.exports = (db) => {
     const getBookList = getQuery(SQL_GET_BOOK_LISTING, db)
     const getBookCount = getQuery(SQL_GET_LIST_COUNT, db)
 
-    router.get(['/catalog/:alpha', '/catalog/:alpha/:p'], async (req, res) => {
+    router.get(['/catalog/:alpha', '/catalog/:alpha/:p'], async (req, res, next) => {
 
         //get listing of books by first letter, 10 per page, asc
 
         const p = parseInt(req.params.p) || 1
 
         try {
-            let [pages] = await getBookCount(`${req.params.alpha}%`)
+            const q = req.params.alpha
+            let [pages] = await getBookCount(`${q}%`)
             pages = Math.ceil(pages.totalBooks / 10)
             //check for extremes
-            if (p > pages || p <= 0) {
+            if (p > pages || req.params.p <= 0) {
+                console.log('here')
                 res.status(404)
                 res.type('text/html')
                 res.render('error', { code: '404 Page not Found' })
                 return
             }
             const offset = (p == 1) ? 0 : (p - 1) * 10
-            const results = await (await getBookList([`${req.params.alpha}%`, offset]))
+            const results = await (await getBookList([`${q}%`, offset]))
                 .map(
                     (book) => { return { title: book.title, book_id: book.book_id } }
                 )
@@ -37,7 +39,7 @@ module.exports = (db) => {
             res.type('text/html')
             res.render('catalog', {
                 results,
-                idx: req.params.alpha,
+                idx: q,
                 prevPage: p - 1,
                 nextPage: p + 1,
                 finalPage: pages - p
