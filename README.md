@@ -1,6 +1,7 @@
 # PCP FSD SSF Final Assessment
 
-App is deployed on hobby dyno at heroku
+App is deployed on a hobby dyno at heroku
+
 DB is hosted on an Azure VM
 
 https://goodreads.imcs.fyi/
