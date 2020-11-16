@@ -7,4 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class AppComponent {
   title = 'helloworld';
+  todoArr = []; 
+  addVal(val) { this.todoArr.push(val)};
+  
 }

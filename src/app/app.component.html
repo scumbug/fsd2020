@@ -1,3 +1,19 @@
-<h1>hello world!</h1>
-
-<img src="assets/cat.jpg" alt="" width="50%">
+<div class="container mt-5">
+    <div class="form-group">
+        <h1>Test Form</h1>
+        <input type="text" name="todo" placeholder="Add some stuff here" ngModel #input
+            (keydown.enter)="addVal(input.value)">
+        <button class="btn btn-primary" (click)="addVal(input.value)">Submit</button>
+    </div>
+    <div class="row">
+        <ul>
+            <li *ngFor="let result of todoArr">{{result}}</li>
+        </ul>
+    </div>
+    <div class="row">
+        <h5>Rando cat img</h5>
+    </div>
+    <div class="row">
+        <img src="assets/cat.jpg" alt="" width="10%">
+    </div>
+</div>
