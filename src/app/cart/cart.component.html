@@ -2,9 +2,11 @@
     <div class="col mb-2" *ngFor="let item of cart | keyvalue">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{item.key}}</h5>
-                <p class="card-text">{{item.value}} </p>
-                <a class="btn btn-primary" (click)="deleteItem(item.key)">Delete</a>
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{item.key}}</h5>
+                    <p class="card-text">{{item.value}}</p>
+                    <a class="btn btn-primary" (click)="deleteItem(item.key)">Delete</a>
+                </div>
             </div>
         </div>
     </div>

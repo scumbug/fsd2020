@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-  
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,10 +22,10 @@ export class AppComponent {
 
   //add items to cart
   pushToCart(item) {
-    if(this.cart.has(item)){
-      this.cart.set(item,this.cart.get(item)+1)
+    if (this.cart.has(item)) {
+      this.cart.set(item, this.cart.get(item) + 1)
     } else {
-      this.cart.set(item,1);
+      this.cart.set(item, 1);
     }
     console.log(this.cart);
   }

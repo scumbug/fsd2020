@@ -17,7 +17,8 @@ export class InventoryComponent implements OnInit {
   @Output() notifyApp = new EventEmitter<string>();
 
   //fire an event to parent to add item to cart
-  addCart($event,item){
-    this.notifyApp.next(item);
+  //changed from passing in extra params to straight up traversing DOM to get product name
+  addCart($event) {
+    this.notifyApp.next($event.target.parentElement.firstChild.innerText)
   }
 }
