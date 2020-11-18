@@ -6,11 +6,24 @@
         </div>
         <div class="col">
             <h1>My Tasks</h1>
-            <div *ngFor="let todo of todos; index as idx">
-                {{todo.des}}
-                {{todo.due | json}}
-                {{todo.priority}}
-                <button mat-button type="button" (click)="deleteTodo(idx)">Delete</button>
+            <div class="card" style="width: 20rem;" *ngFor="let todo of todos; index as idx">
+                <div class="card-body">
+                    <h3 class="card-text">{{todo.des}}</h3>
+                    <small class="font-italic text-muted">Priority: {{todo.priority}}</small>
+                </div>
+                <div class="card-footer d-flex">
+                    <div class="mr-auto" style="line-height: 40px;">
+                        <small class="text-monospace">Due on {{todo.due | date : 'dd MMM'}}</small>
+                    </div>
+                    <div>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>    
+                    </div>
+                </div>
             </div>
         </div>
     </div>
