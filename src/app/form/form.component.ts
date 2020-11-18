@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -7,17 +7,22 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  
+
+  //init variables
   todoForm: FormGroup
-  minDate = new Date()
-  priorities = ['low', 'medium', 'high']
   editDes: String
   editPriority: String
   editIdx: Number
 
+  //declare dates and hard code priority radio button
+  minDate = new Date()
+  priorities = ['low', 'medium', 'high']
+
+  //setup listener for editing todos and emitter for firing data back to parent
   @Input() todo: any
   @Output() emitTodo = new EventEmitter()
 
+  //construct form model
   constructor(fb: FormBuilder) {
     this.todoForm = fb.group({
       des: fb.control('', [Validators.required]),
@@ -28,11 +33,11 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
+  //on modal opens, set default values to the todo that is to be edited
   ngOnChanges(): void {
-    if(this.todo !== undefined) {
+    if (this.todo !== undefined) {
       this.editDes = this.todo.des
       this.editPriority = this.todo.priority
       this.editIdx = this.todo.idx
@@ -45,8 +50,9 @@ export class FormComponent implements OnInit {
     return this.todoForm
   }
 
+  //process and fire form data to parent
   processForm() {
-    if(this.editIdx != undefined) {
+    if (this.editIdx != undefined) {
       this.todoForm.controls.idx.setValue(this.editIdx)
     }
     this.emitTodo.next(this.todoForm.value)

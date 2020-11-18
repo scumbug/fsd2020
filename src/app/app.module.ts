@@ -8,13 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MaterialModule } from './material.module';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { EditComponent } from './edit/edit.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    EditComponent
   ],
   imports: [
     BrowserModule,

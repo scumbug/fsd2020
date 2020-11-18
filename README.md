@@ -1,5 +1,19 @@
 # Csfws3
 
+Deployed on [GitHub Pages](https://scumbug.github.io/csfws3/)
+
+Checklist
+
+- [x] Todo form
+- [x] Todo List
+- [x] Mat design incorporated
+- [x] Validation
+- [x] Delete Function
+- [x] Edit Function (maybe try mat design dialog instead of bootstrap modal next time =x)
+- [ ] Completed Function
+- [ ] Local storage
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
 
 ## Development server
