@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -7,19 +7,27 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-
+  
   todoForm: FormGroup
+  minDate = new Date()
+  priorities = ['low', 'medium', 'high']
+
   @Output() emitTodo = new EventEmitter()
 
   constructor(fb: FormBuilder) {
     this.todoForm = fb.group({
-      des: fb.control(''),
-      priority: fb.control(''),
-      due: fb.control(new Date())
+      des: fb.control('', [Validators.required]),
+      priority: fb.control('', [Validators.required]),
+      due: fb.control('', [Validators.required])
     })
-   }
+  }
 
   ngOnInit(): void {
+  }
+
+  //shorthand for form obj
+  get f() {
+    return this.todoForm
   }
 
   processForm() {

@@ -1,18 +1,31 @@
 <form [formGroup]="todoForm" (ngSubmit)="processForm()">
     <div>
-        <label for="des">Description: </label>
-        <input type="text" formControlName="des">    
+        <mat-form-field>
+            <mat-label>Description: </mat-label>
+            <input type="text" matInput formControlName="des">
+            <mat-error *ngIf="f.get('due').hasError('required')">
+                Give me a description
+            </mat-error>
+        </mat-form-field>
     </div>
     <div>
         <label for="priority">Priority: </label>
-        <select name="priority" formControlName="priority">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>    
+        <mat-radio-group formControlName="priority">
+            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;">
+                {{priority}}
+            </mat-radio-button>
+        </mat-radio-group>
     </div>
     <div>
-        <input type="date" name="due" formControlName="due">
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="due" [min]="minDate" formControlName="due">
+            <mat-datepicker-toggle matSuffix [for]="due"></mat-datepicker-toggle>
+            <mat-datepicker #due></mat-datepicker>
+            <mat-error *ngIf="f.get('due').hasError('matDatepickerMin') || f.get('due').hasError('required')">
+                Do something about your dates!
+            </mat-error>
+        </mat-form-field>
     </div>
-    <button type="submit">Add</button>
+    <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
 </form>

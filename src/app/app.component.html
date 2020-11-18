@@ -1,8 +1,17 @@
-<app-form (emitTodo)="addTodo($event)"></app-form>
-
-<div *ngFor="let todo of todos; index as idx">
-    {{todo.des}}
-    {{todo.due}}
-    {{todo.priority}}
-    <button type="button" (click)="deleteTodo(idx)">Delete</button>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Add Task</h1>
+            <app-form (emitTodo)="addTodo($event)"></app-form>
+        </div>
+        <div class="col">
+            <h1>My Tasks</h1>
+            <div *ngFor="let todo of todos; index as idx">
+                {{todo.des}}
+                {{todo.due | json}}
+                {{todo.priority}}
+                <button mat-button type="button" (click)="deleteTodo(idx)">Delete</button>
+            </div>
+        </div>
+    </div>
 </div>
