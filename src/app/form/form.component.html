@@ -33,8 +33,6 @@
         <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
     </ng-container>
     <ng-container *ngIf="editIdx != undefined">
-        <button type="submit" mat-button >Update</button>
+        <button type="submit" mat-button [disabled]="todoForm.invalid">Update</button>
     </ng-container>
 </form>
-
-<button type="button" (click)="runLog()">log</button>

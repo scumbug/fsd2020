@@ -52,8 +52,5 @@ export class FormComponent implements OnInit {
     this.emitTodo.next(this.todoForm.value)
     this.todoForm.reset()
   }
-  runLog() {
-    console.log(this.editPriority);
-  }
 
 }
