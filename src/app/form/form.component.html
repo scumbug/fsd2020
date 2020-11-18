@@ -2,7 +2,7 @@
     <div>
         <mat-form-field>
             <mat-label>Description: </mat-label>
-            <input type="text" matInput formControlName="des">
+            <input type="text" matInput formControlName="des" value="{{editDes}}">
             <mat-error *ngIf="f.get('due').hasError('required')">
                 Give me a description
             </mat-error>
@@ -11,7 +11,8 @@
     <div>
         <label for="priority">Priority: </label>
         <mat-radio-group formControlName="priority">
-            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;">
+            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;"
+                [checked]="editPriority == priority">
                 {{priority}}
             </mat-radio-button>
         </mat-radio-group>
@@ -19,13 +20,21 @@
     <div>
         <mat-form-field appearance="fill">
             <mat-label>Choose a date</mat-label>
-            <input matInput [matDatepicker]="due" [min]="minDate" formControlName="due">
-            <mat-datepicker-toggle matSuffix [for]="due"></mat-datepicker-toggle>
-            <mat-datepicker #due></mat-datepicker>
+            <input matInput [matDatepicker]="editdue" [min]="minDate" formControlName="due">
+            <mat-datepicker-toggle matSuffix [for]="editdue"></mat-datepicker-toggle>
+            <mat-datepicker #editdue></mat-datepicker>
             <mat-error *ngIf="f.get('due').hasError('matDatepickerMin') || f.get('due').hasError('required')">
                 Do something about your dates!
             </mat-error>
         </mat-form-field>
     </div>
-    <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
+
+    <ng-container *ngIf="editIdx == undefined">
+        <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
+    </ng-container>
+    <ng-container *ngIf="editIdx != undefined">
+        <button type="submit" mat-button >Update</button>
+    </ng-container>
 </form>
+
+<button type="button" (click)="runLog()">log</button>
