@@ -1,0 +1,18 @@
+<form [formGroup]="todoForm" (ngSubmit)="processForm()">
+    <div>
+        <label for="des">Description: </label>
+        <input type="text" formControlName="des">    
+    </div>
+    <div>
+        <label for="priority">Priority: </label>
+        <select name="priority" formControlName="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>    
+    </div>
+    <div>
+        <input type="date" name="due" formControlName="due">
+    </div>
+    <button type="submit">Add</button>
+</form>
