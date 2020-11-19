@@ -46,12 +46,14 @@ export class FormComponent implements OnInit {
   }
 
   //process and fire form data to parent
-  processForm() {
+  processForm(event) {
     if (this.todo != undefined) {
       this.todoForm.controls.idx.setValue(this.todo.idx)
     }
     this.emitTodo.next(this.todoForm.value)
     this.todoForm.reset()
+    //workaround for this bug https://github.com/angular/components/issues/4190
+    event.currentTarget.reset()
   }
 
 }

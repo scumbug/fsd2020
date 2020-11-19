@@ -1,9 +1,9 @@
-<form [formGroup]="todoForm" (ngSubmit)="processForm()">
+<form [formGroup]="todoForm" (ngSubmit)="processForm($event)">
     <div>
         <mat-form-field>
             <mat-label>Description: </mat-label>
             <input type="text" matInput formControlName="des" value="{{todo?.des}}">
-            <mat-error *ngIf="f.get('due').hasError('required')">
+            <mat-error *ngIf="f.get('des').hasError('required')">
                 Give me a description
             </mat-error>
         </mat-form-field>
@@ -15,6 +15,9 @@
                 [checked]="todo?.priority == priority">
                 {{priority}}
             </mat-radio-button>
+            <mat-error *ngIf="f.get('priority').hasError('required') && f.get('priority').hasError('touched')">
+                Give me a priority
+            </mat-error>
         </mat-radio-group>
     </div>
     <div>
