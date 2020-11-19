@@ -1,21 +1,20 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col">
-            <h1>Add Task</h1>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>ToDo App</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div fxflex fxLayout="row" fxLayoutAlign="center" fxLayoutGap="50px" style="margin-top: 1%;">
+    <div>
             <app-form (emitTodo)="addTodo($event)"></app-form>
-        </div>
-        <div class="col">
-            <h1>My Tasks</h1>
-            <div class="card mb-1" style="width: 20rem;" *ngFor="let todo of todos; index as idx">
-                <div class="card-body">
-                    <h3 class="card-text">{{todo.des}}</h3>
-                    <small class="font-italic text-muted">Priority: {{todo.priority}}</small>
-                </div>
-                <div class="card-footer d-flex">
-                    <div class="mr-auto" style="line-height: 40px;">
-                        <small class="text-monospace">Due on {{todo.due | date : 'dd MMM'}}</small>
-                    </div>
-                    <div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start" >
+        <mat-list style="min-width: 300px;">
+            <h1 matSubheader>High</h1>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'high'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
                         <button mat-icon-button>
                             <mat-icon> check </mat-icon>
                         </button>
@@ -25,26 +24,67 @@
                         <button mat-icon-button (click)="deleteTodo(idx)">
                             <mat-icon> delete </mat-icon>
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </mat-action-list>
+                </mat-list-item>    
+            </ng-container>
+
+            <mat-divider></mat-divider>
+
+            <div mat-subheader>Medium</div>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'medium'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                        <button mat-icon-button data-toggle="modal" data-target="#todoModal" (click)="editTodo(idx)">
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>
+                    </mat-action-list>
+                </mat-list-item>    
+            </ng-container>
+
+            <mat-divider></mat-divider>
+
+            <div mat-subheader>Low</div>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'low'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                        <button mat-icon-button data-toggle="modal" data-target="#todoModal" (click)="editTodo(idx)">
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>
+                    </mat-action-list>
+                </mat-list-item>    
+            </ng-container>        </mat-list>
     </div>
 </div>
 
 <!-- edit modal -->
 <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="todoModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closemodal">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="todoModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closemodal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-form [todo]="todo" (emitTodo)="updateTodo($event)"></app-form>
+            </div>
         </div>
-        <div class="modal-body">
-          <app-form [todo]="todo" (emitTodo)="updateTodo($event)"></app-form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>

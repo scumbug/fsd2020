@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MaterialModule } from './material.module';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

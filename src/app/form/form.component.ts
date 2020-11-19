@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { todo } from '../interfaces/todo.interface';
 
 @Component({
   selector: 'app-form',
@@ -14,7 +15,7 @@ export class FormComponent implements OnInit {
   priorities: String[]
 
   //setup listener for editing todos and emitter for firing data back to parent
-  @Input() todo: any
+  @Input() todo: todo
   @Output() emitTodo = new EventEmitter()
 
   //construct form model

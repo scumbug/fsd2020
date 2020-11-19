@@ -11,7 +11,10 @@ Checklist
 - [x] Delete Function
 - [x] Edit Function (maybe try mat design dialog instead of bootstrap modal next time =x)
 - [ ] Completed Function
-- [ ] Local storage
+- [x] Local storage
+- [x] Transition to flexlayout instead of bootstrap
+- [ ] Get rid of bootstrap
+
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
