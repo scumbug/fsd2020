@@ -8,15 +8,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
 
-  //init variables
+  //declare variables
   todoForm: FormGroup
-  editDes: String
-  editPriority: String
-  editIdx: Number
-
-  //declare dates and hard code priority radio button
-  minDate = new Date()
-  priorities = ['low', 'medium', 'high']
+  minDate: Date
+  priorities: String[]
 
   //setup listener for editing todos and emitter for firing data back to parent
   @Input() todo: any
@@ -32,15 +27,15 @@ export class FormComponent implements OnInit {
     })
   }
 
+  //init variables
   ngOnInit(): void {
+    this.minDate = new Date()
+    this.priorities = ['low', 'medium', 'high']
   }
 
   //on modal opens, set default values to the todo that is to be edited
   ngOnChanges(): void {
     if (this.todo !== undefined) {
-      this.editDes = this.todo.des
-      this.editPriority = this.todo.priority
-      this.editIdx = this.todo.idx
       this.todoForm.controls.due.setValue(this.todo.due)
     }
   }
@@ -52,8 +47,8 @@ export class FormComponent implements OnInit {
 
   //process and fire form data to parent
   processForm() {
-    if (this.editIdx != undefined) {
-      this.todoForm.controls.idx.setValue(this.editIdx)
+    if (this.todo != undefined) {
+      this.todoForm.controls.idx.setValue(this.todo.idx)
     }
     this.emitTodo.next(this.todoForm.value)
     this.todoForm.reset()
