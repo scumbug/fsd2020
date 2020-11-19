@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DiagComponent } from './diag/diag.component';
 import { todo } from './interfaces/todo.interface';
 
 @Component({
@@ -14,6 +16,14 @@ export class AppComponent {
   todos = JSON.parse(localStorage.getItem('todoStor')) || []
   //var for todo to be edited to pass to form.compo
   todo: todo
+
+  constructor(public dialog: MatDialog) {}
+
+  openDialog() {
+    this.dialog.open(DiagComponent, {
+      data: this.todo
+    });
+  }
 
   //push new todo into todos array
   addTodo(todo) {
@@ -31,6 +41,7 @@ export class AppComponent {
   editTodo(idx) {
     this.todo = this.todos[idx]
     this.todo.idx = idx
+    this.openDialog()
   }
 
   //update todo that was edited and close modal

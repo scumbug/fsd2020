@@ -12,11 +12,13 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { DiagComponent } from './diag/diag.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
+    DiagComponent,
   ],
   imports: [
     BrowserModule,

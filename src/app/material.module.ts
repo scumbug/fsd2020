@@ -8,8 +8,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list'
+import { MatDialogModule } from '@angular/material/dialog'
 
-const MATERIAL = [MatDatepickerModule, MatInputModule, MatRadioModule, MatButtonModule, MatIconModule, MatGridListModule, MatToolbarModule, MatCardModule, MatListModule]
+const MATERIAL = [MatDatepickerModule, MatInputModule, MatRadioModule, MatButtonModule, MatIconModule, MatGridListModule, MatToolbarModule, MatCardModule, MatListModule, MatDialogModule]
 
 @NgModule({
     imports: MATERIAL,
