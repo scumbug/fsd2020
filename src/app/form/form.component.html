@@ -2,7 +2,7 @@
     <div>
         <mat-form-field>
             <mat-label>Description: </mat-label>
-            <input type="text" matInput formControlName="des" value="{{todo?.des}}">
+            <input type="text" matInput formControlName="des">
             <mat-error *ngIf="f.get('des').hasError('required')">
                 Give me a description
             </mat-error>
@@ -11,8 +11,7 @@
     <div>
         <label for="priority">Priority: </label>
         <mat-radio-group formControlName="priority">
-            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;"
-                [checked]="todo?.priority == priority">
+            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;">
                 {{priority}}
             </mat-radio-button>
             <mat-error *ngIf="f.get('priority').hasError('required') && f.get('priority').hasError('touched')">
@@ -36,6 +35,6 @@
         <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
     </ng-container>
     <ng-container *ngIf="todo?.idx != undefined">
-        <button type="submit" mat-button [disabled]="todoForm.invalid">Update</button>
+        <button type="submit" mat-button mat-dialog-close [disabled]="todoForm.invalid">Update</button>
     </ng-container>
 </form>

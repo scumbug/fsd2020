@@ -30,6 +30,9 @@ import { DiagComponent } from './diag/diag.component';
     FlexLayoutModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
+  entryComponents: [
+    DiagComponent
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

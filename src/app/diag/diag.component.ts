@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { todo } from '../interfaces/todo.interface'
 
@@ -10,6 +10,14 @@ import { todo } from '../interfaces/todo.interface'
 })
 export class DiagComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public todo: todo) { }
+  constructor(public dialogRef: MatDialogRef<DiagComponent>,
+    @Inject(MAT_DIALOG_DATA) public todo: todo) { }
+
+  @Output() todoForwarder = new EventEmitter()
+
+  forwardTodo(event) {
+    this.todoForwarder.next(event)
+  }
+
 
 }

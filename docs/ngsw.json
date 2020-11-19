@@ -1,0 +1,81 @@
+{
+  "configVersion": 1,
+  "timestamp": 1605803160069,
+  "index": "https://scumbug.github.io/csfws3/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://scumbug.github.io/csfws3/favicon.ico",
+        "https://scumbug.github.io/csfws3/index.html",
+        "https://scumbug.github.io/csfws3/main.c8ad6b687b4e46ab77b7.js",
+        "https://scumbug.github.io/csfws3/manifest.webmanifest",
+        "https://scumbug.github.io/csfws3/polyfills.bf99d438b005d57b2b31.js",
+        "https://scumbug.github.io/csfws3/runtime.359d5ee4682f20e936e9.js",
+        "https://scumbug.github.io/csfws3/styles.e07c481f6320ccf61ba1.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://scumbug.github.io/csfws3/assets/icons/icon-128x128.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-144x144.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-152x152.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-192x192.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-384x384.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-512x512.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-72x72.png",
+        "https://scumbug.github.io/csfws3/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "https://scumbug.github.io/csfws3/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "https://scumbug.github.io/csfws3/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "https://scumbug.github.io/csfws3/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "https://scumbug.github.io/csfws3/index.html": "e363c0cca64ed31de0e2ecdb1e923da578f791c3",
+    "https://scumbug.github.io/csfws3/main.c8ad6b687b4e46ab77b7.js": "e539a48c9bfa1e94a291111d497e7529915fe994",
+    "https://scumbug.github.io/csfws3/manifest.webmanifest": "8bb5d7db54c41e45a1ac83882bc9b0cf6e8fd03d",
+    "https://scumbug.github.io/csfws3/polyfills.bf99d438b005d57b2b31.js": "763cd3b34dfa4600ebb9d9588ec7116988e98920",
+    "https://scumbug.github.io/csfws3/runtime.359d5ee4682f20e936e9.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "https://scumbug.github.io/csfws3/styles.e07c481f6320ccf61ba1.css": "cd266f66bc8d9dc99b442f21c4ef669e6157df93"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

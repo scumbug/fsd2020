@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DiagComponent } from './diag/diag.component';
 import { todo } from './interfaces/todo.interface';
@@ -15,14 +15,18 @@ export class AppComponent {
   //storage for lists of todos
   todos = JSON.parse(localStorage.getItem('todoStor')) || []
   //var for todo to be edited to pass to form.compo
-  todo: todo
+  @Input() todo: todo
 
   constructor(public dialog: MatDialog) {}
 
   openDialog() {
-    this.dialog.open(DiagComponent, {
+    const dialogRef = this.dialog.open(DiagComponent, {
       data: this.todo
     });
+    dialogRef.componentInstance.todoForwarder.subscribe( (res) => {
+      this.updateTodo(res)
+    }
+    )
   }
 
   //push new todo into todos array
@@ -48,7 +52,6 @@ export class AppComponent {
   updateTodo(todo) {
     this.todos[todo.idx] = todo
     localStorage.setItem('todoStor', JSON.stringify(this.todos));
-    document.getElementById('closemodal').click()
   }
 
 }

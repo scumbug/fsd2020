@@ -37,7 +37,7 @@ export class FormComponent implements OnInit {
   //on modal opens, set default values to the todo that is to be edited
   ngOnChanges(): void {
     if (this.todo !== undefined) {
-      this.todoForm.controls.due.setValue(this.todo.due)
+      this.todoForm.setValue(this.todo)
     }
   }
 
