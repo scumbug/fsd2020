@@ -3,11 +3,13 @@
         <span>ToDo App</span>
     </mat-toolbar-row>
 </mat-toolbar>
-<div fxflex fxLayout="row" fxLayoutAlign="center" fxLayoutGap="50px" style="margin-top: 1%;">
+<div fxflex="50%" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="50px" style="margin-top: 5%">
     <div>
-            <app-form (emitTodo)="addTodo($event)"></app-form>
+        <h1>Add Task</h1>
+        <app-form (emitTodo)="addTodo($event)"></app-form>
     </div>
-    <div fxLayout="column" fxLayoutAlign="start" >
+    <div>
+        <h1>My Tasks</h1>
         <mat-list style="min-width: 300px;">
             <h1 matSubheader>High</h1>
             <ng-container *ngFor="let todo of todos; index as idx">
@@ -25,7 +27,7 @@
                             <mat-icon> delete </mat-icon>
                         </button>
                     </mat-action-list>
-                </mat-list-item>    
+                </mat-list-item>
             </ng-container>
 
             <mat-divider></mat-divider>
@@ -46,7 +48,7 @@
                             <mat-icon> delete </mat-icon>
                         </button>
                     </mat-action-list>
-                </mat-list-item>    
+                </mat-list-item>
             </ng-container>
 
             <mat-divider></mat-divider>
@@ -67,8 +69,9 @@
                             <mat-icon> delete </mat-icon>
                         </button>
                     </mat-action-list>
-                </mat-list-item>    
-            </ng-container>        </mat-list>
+                </mat-list-item>
+            </ng-container>
+        </mat-list>
     </div>
 </div>
 
