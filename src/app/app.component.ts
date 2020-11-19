@@ -11,7 +11,7 @@ export class AppComponent {
 
   //declare variables
   //storage for lists of todos
-  todos = JSON.parse(localStorage.getItem('todoSor')) || []
+  todos = JSON.parse(localStorage.getItem('todoStor')) || []
   //var for todo to be edited to pass to form.compo
   todo: todo
 
