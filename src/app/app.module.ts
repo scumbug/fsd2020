@@ -10,6 +10,8 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { GetBtcService } from './getBtc.service';
+import { HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
@@ -24,8 +26,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     FlexLayoutModule,
     MatMomentDateModule,
     ClipboardModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [GetBtcService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
