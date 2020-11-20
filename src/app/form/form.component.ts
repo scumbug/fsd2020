@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { GetBtcService } from '../getBtc.service';
 import { order } from '../interfaces/order.interface';
 
 @Component({
@@ -15,16 +16,19 @@ export class FormComponent implements OnInit {
   custAddr: string;
   ageCheck: moment.Moment;
   today: Date;
-  gender: string[];
+  cryptoPair: string[] = [];
+  pairPrice: number;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private callAPI: GetBtcService) {}
 
   ngOnInit(): void {
     //init variables
     this.today = new Date();
-    this.ageCheck = moment(this.today).subtract(21, 'years');
+    this.ageCheck = moment(this.today).subtract(21, 'years'); //set max date for datepicker
     this.custAddr = 'mybitcoinaddress';
+    this.getCryptoPair(); //populate crypto pair field
 
+    //init order form
     this.orderForm = this.fb.group({
       phone: this.fb.control('', [
         Validators.required,
@@ -41,8 +45,8 @@ export class FormComponent implements OnInit {
         Validators.required,
         Validators.pattern('[0-9]+(\\.[0-9]+)?'),
       ]),
-      cryptoPair: this.fb.control('SGDBTC'),
-      pairPrice: this.fb.control(10000),
+      cryptoPair: this.fb.control(''),
+      pairPrice: this.fb.control(''),
       qrCode: this.fb.control({ value: '', disabled: true }, [
         Validators.required,
       ]),
@@ -56,5 +60,19 @@ export class FormComponent implements OnInit {
 
   processOrder(event) {
     console.log(this.orderForm.value);
+  }
+
+  getCryptoPair() {
+    this.callAPI.getData().subscribe((data) => {
+      for (let curr in data) {
+        this.cryptoPair.push('BTC' + curr);
+      }
+    });
+  }
+
+  getCryptoPrice(event: string) {
+    this.callAPI.getData().subscribe((data) => {
+      this.pairPrice = data[event.substring(3)]['last'];
+    });
   }
 }

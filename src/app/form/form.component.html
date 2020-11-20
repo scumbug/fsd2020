@@ -69,15 +69,15 @@
       <!-- Crypto Pair -->
       <mat-form-field appearance="outline">
         <mat-label>Crypto Pair</mat-label>
-        <mat-select formControlName="cryptoPair">
-          <mat-option value="SGDBTC"> SGD/BTC </mat-option>
+        <mat-select formControlName="cryptoPair" (selectionChange)="getCryptoPrice($event.value)">
+          <mat-option value="{{pair}}" *ngFor="let pair of cryptoPair"> {{pair}} </mat-option>
         </mat-select>
       </mat-form-field>
 
       <!-- Crypto Price -->
       <mat-form-field appearance="outline">
         <mat-label>Crypto Pair Price</mat-label>
-        <input matInput formControlName="pairPrice" readonly="true" />
+        <input matInput formControlName="pairPrice" readonly="true" [value]="pairPrice" />
       </mat-form-field>
 
       <!-- Quantity -->

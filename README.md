@@ -1,5 +1,14 @@
 # Csfbitcoin
 
+Deployed on [GitHub Pages] (https://scumbug.github.io/csfBTC/)
+
+##Roadmap
+
+- [x] Basic Structure
+- [x] Validation
+- [x] HTTP service
+- [ ] Result processing
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
 
 ## Development server
