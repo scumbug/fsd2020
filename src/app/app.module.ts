@@ -27,4 +27,4 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

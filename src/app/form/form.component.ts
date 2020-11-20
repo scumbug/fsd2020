@@ -20,6 +20,7 @@ export class FormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    //init variables
     this.today = new Date();
     this.ageCheck = moment(this.today).subtract(21, 'years');
     this.custAddr = 'mybitcoinaddress';
@@ -34,7 +35,7 @@ export class FormComponent implements OnInit {
       name: this.fb.control('', [Validators.required]),
       gender: this.fb.control(''),
       dob: this.fb.control('', [Validators.required]),
-      orderDate: this.fb.control(new Date()),
+      orderDate: this.fb.control(this.today),
       orderType: this.fb.control('', [Validators.required]),
       quantity: this.fb.control('', [
         Validators.required,
@@ -55,9 +56,5 @@ export class FormComponent implements OnInit {
 
   processOrder(event) {
     console.log(this.orderForm.value);
-  }
-
-  copyClipboard(copy) {
-    console.log('copy to clipboard');
   }
 }
