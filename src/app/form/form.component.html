@@ -1,0 +1,149 @@
+<div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+  <form [formGroup]="orderForm" (ngSubmit)="processOrder($event)">
+    <h2>KYC</h2>
+    <mat-divider></mat-divider>
+    <div
+      fxLayout="row wrap"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="20px"
+    >
+      <!-- NAME -->
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          placeholder="Enter your name"
+          value="value"
+          formControlName="name"
+        />
+        <mat-error>Please enter a name!</mat-error>
+      </mat-form-field>
+
+      <!-- Phone -->
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input
+          matInput
+          placeholder="Enter your phone"
+          value="value"
+          formControlName="phone"
+        />
+        <mat-error *ngIf="f.get('phone').hasError('required')"
+          >Please enter a name!</mat-error
+        >
+      </mat-form-field>
+
+      <!-- Gender -->
+      <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" appearance="outline">
+          <mat-option value="male"> Male </mat-option>
+          <mat-option value="female"> Female </mat-option>
+        </mat-select>
+        <mat-error>Please select a gender</mat-error>
+      </mat-form-field>
+
+      <!-- DOB -->
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input
+          matInput
+          [matDatepicker]="dob"
+          [max]="ageCheck"
+          placeholder="Date of Birth"
+          formControlName="dob"
+        />
+        <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+        <mat-datepicker #dob></mat-datepicker>
+        <mat-error *ngIf="f.get('dob').hasError('required')"
+          >Please key in your date of birth</mat-error
+        >
+        <mat-error *ngIf="f.get('dob').hasError('matDatepickerMax')"
+          >You need to be 21 years and above!</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <h2>Order Details</h2>
+    <mat-divider></mat-divider>
+    <!-- Buy/Sell -->
+    <mat-radio-group
+      fxLayout="row"
+      fxLayoutAlign="space-around start"
+      formControlName="orderType"
+      style="margin-bottom: 20px"
+    >
+      <mat-radio-button value="buy" (click)="f.controls['qrCode'].disable()"
+        >Buy</mat-radio-button
+      >
+      <mat-radio-button value="sell" (click)="f.controls['qrCode'].enable()"
+        >Sell</mat-radio-button
+      >
+    </mat-radio-group>
+
+    <div fxLayout="row wrap" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+      <!-- Crypto Pair -->
+      <mat-form-field appearance="outline">
+        <mat-label>Crypto Pair</mat-label>
+        <mat-select formControlName="cryptoPair">
+          <mat-option value="SGDBTC"> SGD/BTC </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Crypto Price -->
+      <mat-form-field appearance="outline">
+        <mat-label>Crypto Pair Price</mat-label>
+        <input matInput formControlName="pairPrice" readonly="true" />
+      </mat-form-field>
+
+      <!-- Quantity -->
+      <mat-form-field appearance="outline">
+        <mat-label>Order Unit</mat-label>
+        <input
+          matInput
+          placeholder="Enter your name"
+          value="value"
+          formControlName="quantity"
+        />
+        <mat-error>Please indicate the amount to buy/sell</mat-error>
+      </mat-form-field>
+
+      <!-- Paynow -->
+      <mat-form-field
+        appearance="outline"
+        *ngIf="f.get('orderType').value == 'sell'"
+      >
+        <mat-label>Paylah/Paynow QR URL</mat-label>
+        <input
+          matInput
+          placeholder="payment URL"
+          value="value"
+          formControlName="qrCode"
+        />
+        <mat-error>Please include your QR code url</mat-error>
+      </mat-form-field>
+
+      <!-- BTC address-->
+      <mat-form-field
+        appearance="outline"
+        *ngIf="f.get('orderType').value == 'buy'"
+      >
+        <mat-label>Click to copy bitcoin address</mat-label>
+        <input
+          matInput
+          readonly="true"
+          [value]="custAddr"
+          (click)="copyClipboard(value)"
+        />
+      </mat-form-field>
+    </div>
+    <div
+      fxLayout="row wrap"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="10px"
+    >
+      <button mat-button [disabled]="orderForm.invalid">Submit</button>
+      <button mat-button>Reset</button>
+    </div>
+  </form>
+</div>
