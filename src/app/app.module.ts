@@ -10,9 +10,10 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent],
+  declarations: [AppComponent, FormComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

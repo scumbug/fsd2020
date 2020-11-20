@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
-  <form [formGroup]="orderForm" (ngSubmit)="processOrder($event)">
+  <form [formGroup]="orderForm" (ngSubmit)="confirmDialog()">
     <h2>KYC</h2>
     <mat-divider></mat-divider>
     <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="20px">
@@ -83,7 +83,7 @@
       <!-- Quantity -->
       <mat-form-field appearance="outline">
         <mat-label>Order Unit</mat-label>
-        <input matInput placeholder="Enter your name" value="value" formControlName="quantity" />
+        <input matInput placeholder="Amount of BTC to buy" formControlName="quantity" />
         <mat-error *ngIf="f.get('quantity').hasError('required')">Please indicate the amount to buy/sell</mat-error>
         <mat-error *ngIf="f.get('quantity').hasError('pattern')">Please enter a number</mat-error>
       </mat-form-field>
