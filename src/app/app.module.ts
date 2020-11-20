@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [AppComponent, FormComponent],
@@ -21,6 +22,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MaterialModule,
     FlexLayoutModule,
     MatMomentDateModule,
+    ClipboardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

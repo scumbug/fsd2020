@@ -36,7 +36,10 @@ export class FormComponent implements OnInit {
       dob: this.fb.control('', [Validators.required]),
       orderDate: this.fb.control(new Date()),
       orderType: this.fb.control('', [Validators.required]),
-      quantity: this.fb.control('', [Validators.required]),
+      quantity: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('[0-9]+(\\.[0-9]+)?'),
+      ]),
       cryptoPair: this.fb.control('SGDBTC'),
       pairPrice: this.fb.control(10000),
       qrCode: this.fb.control({ value: '', disabled: true }, [

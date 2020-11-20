@@ -133,7 +133,7 @@
           matInput
           readonly="true"
           [value]="custAddr"
-          (click)="copyClipboard(value)"
+          [cdkCopyToClipboard]="custAddr"
         />
       </mat-form-field>
     </div>
@@ -142,8 +142,10 @@
       fxLayoutAlign="space-around center"
       fxLayoutGap="10px"
     >
-      <button mat-button [disabled]="orderForm.invalid">Submit</button>
-      <button mat-button>Reset</button>
+      <button type="submit" mat-button [disabled]="orderForm.invalid">
+        Submit
+      </button>
+      <button type="button" mat-button (click)="f.reset()">Reset</button>
     </div>
   </form>
 </div>
