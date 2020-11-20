@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { GetBtcService } from '../getBtc.service';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogModel,
+} from '../confirm-dialog/confirm-dialog.component';
 import { order } from '../interfaces/order.interface';
 
 @Component({
@@ -19,7 +24,7 @@ export class FormComponent implements OnInit {
   cryptoPair: string[] = [];
   pairPrice: number;
 
-  constructor(private fb: FormBuilder, private callAPI: GetBtcService) {}
+  constructor(private fb: FormBuilder, private callAPI: GetBtcService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     //init variables
@@ -73,6 +78,25 @@ export class FormComponent implements OnInit {
   getCryptoPrice(event: string) {
     this.callAPI.getData().subscribe((data) => {
       this.pairPrice = data[event.substring(3)]['last'];
+    });
+  }
+  confirmDialog(): void {
+    //dialog message
+    const message = `You are about to ${this.f.get('orderType').value} ${
+      this.f.get('quantity').value
+    } of BTC, please confirm`;
+
+    const dialogData = new ConfirmDialogModel('Confirm Action', message);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      //logic here upon dialog yes/no
+      if (res) {
+        this.processOrder('test');
+      }
     });
   }
 }
