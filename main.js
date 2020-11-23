@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const morgan = require('morgan');
+const { response } = require('express');
 
 //declare const
 const cart = [
@@ -26,6 +28,9 @@ const app = express();
 // allow CORS
 app.use(cors());
 
+// logger
+app.use(morgan());
+
 //return cart data in json
 app.get('/cart', (_req, res) => {
 	res.format({
@@ -48,6 +53,7 @@ app.get('/cart/:id', (req, res) => {
 			res.status(200);
 			res.type('application/json');
 			res.json(cart.find(({ id }) => id === parseInt(req.params.id)) || {});
+			console.log(cart);
 		},
 		default: () => {
 			res.status(406);
@@ -58,7 +64,40 @@ app.get('/cart/:id', (req, res) => {
 });
 
 app.put('/cart/:id', express.json(), (req, res) => {
-	console.log(req.body);
+	const idx = cart.findIndex((i) => i.id == req.body.id);
+	if (idx < 0) cart.push(req.body);
+	else cart[idx] = req.body;
+	res.format({
+		'application/json': () => {
+			res.status(200);
+			res.type('application/json');
+			res.json({});
+			console.log(cart);
+		},
+		default: () => {
+			res.status(200);
+			res.type('text/plain');
+			res.send('406 Not Acceptable');
+		},
+	});
+});
+
+app.delete('/cart/:id', (req, res) => {
+	const idx = cart.findIndex((i) => i.id == req.params.id);
+	cart.splice(idx, 1);
+	res.format({
+		'application/json': () => {
+			res.status(200);
+			res.type('application/json');
+			res.json({});
+			console.log(cart);
+		},
+		default: () => {
+			res.status(200);
+			res.type('text/plain');
+			res.send('406 Not Acceptable');
+		},
+	});
 });
 
 app.listen(PORT, () => {
