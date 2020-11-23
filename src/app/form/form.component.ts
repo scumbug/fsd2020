@@ -10,7 +10,9 @@ import { item } from '../item.interface';
 export class FormComponent implements OnInit {
   //declare variables
   @Input() item: item;
+  @Input() next: number;
   @Output() updateCart = new EventEmitter();
+  @Output() deleteCart = new EventEmitter();
   crudForm: FormGroup;
 
   constructor(private fb: FormBuilder) {}
@@ -28,21 +30,30 @@ export class FormComponent implements OnInit {
   //destructure form creation
   createForm(item: item): FormGroup {
     return this.fb.group({
-      id: this.fb.control(item?.id),
+      id: this.fb.control(item?.id || this.next),
       name: this.fb.control(item?.name),
       quantity: this.fb.control(item?.quantity),
     });
   }
 
-  deleteItem(id: number) {
-    console.log('delete something');
+  deleteItem() {
+    this.deleteCart.next(this.crudForm.value as item);
+    this.crudForm.reset();
+    this.item = null;
   }
 
-  addItem(id: number) {
+  addItem() {
+    this.f.get('id').setValue(this.next);
+    console.log(this.crudForm.value);
     console.log('add something');
   }
 
-  updateItem(id: number) {
+  updateItem() {
+    if (this.f.get('id').value == null) {
+      this.f.get('id').setValue(this.next);
+    }
     this.updateCart.next(this.crudForm.value as item);
+    this.crudForm.reset();
+    this.item = null;
   }
 }

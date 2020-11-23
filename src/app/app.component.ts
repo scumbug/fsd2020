@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { CartService } from './cart.service';
 import { item } from './item.interface';
 
 @Component({
@@ -12,42 +12,44 @@ export class AppComponent {
   data: item[];
   item: item;
   id: number;
+  next: number;
 
-  constructor(private http: HttpClient) {}
+  constructor(private cartSvc: CartService) {}
 
   async ngOnInit(): Promise<void> {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     try {
-      this.data = await this.http
-        .get<item[]>('http://localhost:3000/cart')
-        .toPromise();
+      this.data = await this.cartSvc.getCart();
+      this.next = this.data.length + 1;
     } catch (e) {
-      console.log('error retrieving data');
+      console.log('get item error');
     }
   }
 
   async editItem(id: number) {
     try {
-      this.item = await this.http
-        .get<item>(`http://localhost:3000/cart/${id}`)
-        .toPromise();
+      this.item = await this.cartSvc.getItem(id);
     } catch (e) {
-      console.log('error retrieving data');
+      console.log('edit item error');
     }
   }
 
   async updateCart($event: item) {
     try {
-      await this.http
-        .put<any>(`http://localhost:3000/cart/${$event.id}`, $event)
-        .toPromise();
-
-      this.data = await this.http
-        .get<item[]>('http://localhost:3000/cart')
-        .toPromise();
+      await this.cartSvc.updateCart($event);
+      this.data = await this.cartSvc.getCart();
+      this.next = this.data.length + 1;
     } catch (e) {
       console.log('error sending data');
+    }
+  }
+
+  async deleteCart($event: item) {
+    try {
+      await this.cartSvc.deleteCart($event.id);
+      this.data = await this.cartSvc.getCart();
+      this.next = this.data.length + 1;
+    } catch (e) {
+      console.log('unable to delete');
     }
   }
 }

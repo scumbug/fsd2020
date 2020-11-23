@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CartService } from './cart.service';
 
 @NgModule({
   declarations: [AppComponent, FormComponent, ListComponent],
@@ -21,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [CartService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

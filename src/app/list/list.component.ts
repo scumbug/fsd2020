@@ -10,7 +10,6 @@ export class ListComponent implements OnInit {
   //declare variables
   @Input() data: item[];
   @Output() sendId = new EventEmitter<number>();
-  itemList: string[];
 
   constructor() {}
 
