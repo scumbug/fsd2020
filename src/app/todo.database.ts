@@ -22,6 +22,10 @@ export class TodoDatabase extends Dexie {
     return await this.todo.put(t);
   }
 
+  async deleteTodo(t: Todo): Promise<any> {
+    return await this.todo.delete(t.id);
+  }
+
   async getTodoSummary(): Promise<TodoSummary[]> {
     return (await this.todo.toArray()).map((d) => {
       return {

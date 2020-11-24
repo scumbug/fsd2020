@@ -32,7 +32,6 @@ export class TodoComponent implements OnInit {
 
       //patch in tasks
       t.tasks.forEach((task) => {
-        console.log(task);
         this.tasksArray.push(
           this.fb.group({
             description: task.description,

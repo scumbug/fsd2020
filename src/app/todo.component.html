@@ -6,8 +6,6 @@
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
             <button mat-raised-button color="primary" (click)="addTask()">Add Task</button>
-            <button mat-raised-button color="primary">Save</button>
-            <button mat-raised-button color="primary">Cancel</button>
         </div>
 
         <table *ngIf="tasksArray.controls.length>0">

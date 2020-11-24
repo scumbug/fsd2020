@@ -1,1 +1,5 @@
-<app-todo [todo]="todo"></app-todo>
+<app-todo #myTodo [todo]="todo"></app-todo>
+
+<button mat-raised-button color="primary" (click)="updateTodo()">Update</button>
+<button mat-raised-button color="primary" (click)="deleteTodo()">Delete</button>
+<button mat-raised-button color="primary" [routerLink]="['/']">Back</button>
