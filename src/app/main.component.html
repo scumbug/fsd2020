@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">
+    <button type="button" [routerLink]="['/create']">Create</button>
+</div>
+
+<ul *ngFor="let todo of todos">
+    <a [routerLink]="['/todo/',todo.id]">
+        <li>{{todo.title}}</li>
+    </a>
+</ul>

@@ -1,0 +1,46 @@
+<div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px">
+    <form [formGroup]="todoForm" (ngSubmit)="processForm()">
+        <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="Insert Title" formControlName="title">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button mat-raised-button color="primary" (click)="addTask()">Add Task</button>
+            <button mat-raised-button color="primary">Save</button>
+            <button mat-raised-button color="primary">Cancel</button>
+        </div>
+
+        <table *ngIf="tasksArray.controls.length>0">
+            <tr>
+                <th>Description</th>
+                <th>Priority</th>
+                <th></th>
+            </tr>
+            <tbody formArrayName="tasks">
+                <tr *ngFor="let task of tasksArray.controls; index as idx" [formGroup]="task">
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput placeholder="Task Description" formControlName="description">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Choose an option</mat-label>
+                            <mat-select formControlName="priority">
+                                <mat-option value="0">Low</mat-option>
+                                <mat-option value="1">Medium</mat-option>
+                                <mat-option value="2">High</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <button mat-icon-button (click)="deleteTask(idx)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+</div>
