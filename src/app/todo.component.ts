@@ -73,6 +73,4 @@ export class TodoComponent implements OnInit {
   deleteTask(idx: number) {
     this.tasksArray.removeAt(idx);
   }
-
-  processForm() {}
 }

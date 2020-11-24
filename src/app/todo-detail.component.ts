@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Todo } from './models.interface';
 import { TodoComponent } from './todo.component';
 import { TodoDatabase } from './todo.database';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-todo-detail',
