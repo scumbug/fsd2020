@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Todo } from './models.interface';
 
@@ -11,6 +11,7 @@ export class TodoComponent implements OnInit {
   todoForm: FormGroup;
   tasksArray: FormArray;
 
+  @Input()
   get todo(): Todo {
     const t: Todo = this.todoForm.value as Todo;
     t.tasks = t.tasks.map((v) => {
@@ -21,7 +22,26 @@ export class TodoComponent implements OnInit {
     return t;
   }
 
-  set todo(t: Todo) {}
+  set todo(t: Todo) {
+    if (t) {
+      //patch in id and title
+      this.todoForm.patchValue({
+        id: t.id,
+        title: t.title,
+      });
+
+      //patch in tasks
+      t.tasks.forEach((task) => {
+        console.log(task);
+        this.tasksArray.push(
+          this.fb.group({
+            description: task.description,
+            priority: task.priority.toString(),
+          })
+        );
+      });
+    }
+  }
 
   constructor(private fb: FormBuilder) {}
 
@@ -30,11 +50,11 @@ export class TodoComponent implements OnInit {
     //this.tasksArray = this.todoForm.get('tasks') as FormArray; //alternative to creating FormArray inside form generator
   }
 
-  private createTodo(): FormGroup {
+  private createTodo(todo: Todo = null): FormGroup {
     this.tasksArray = this.fb.array([]);
     return this.fb.group({
-      id: this.fb.control(''),
-      title: this.fb.control('', [Validators.required]),
+      id: this.fb.control(todo?.id),
+      title: this.fb.control(todo?.title, [Validators.required]),
       tasks: this.tasksArray,
     });
   }

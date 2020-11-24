@@ -15,7 +15,6 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
     this.db.getTodoSummary().then((result) => {
       this.todos = result;
-      console.log(result);
     });
   }
 }
