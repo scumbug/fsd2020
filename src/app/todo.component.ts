@@ -34,8 +34,8 @@ export class TodoComponent implements OnInit {
       t.tasks.forEach((task) => {
         this.tasksArray.push(
           this.fb.group({
-            description: task.description,
-            priority: task.priority.toString(),
+            description: this.fb.control(task.description),
+            priority: this.fb.control(task.priority.toString()),
           })
         );
       });
@@ -49,11 +49,11 @@ export class TodoComponent implements OnInit {
     //this.tasksArray = this.todoForm.get('tasks') as FormArray; //alternative to creating FormArray inside form generator
   }
 
-  private createTodo(todo: Todo = null): FormGroup {
+  private createTodo(): FormGroup {
     this.tasksArray = this.fb.array([]);
     return this.fb.group({
-      id: this.fb.control(todo?.id),
-      title: this.fb.control(todo?.title, [Validators.required]),
+      id: this.fb.control(''),
+      title: this.fb.control('', [Validators.required]),
       tasks: this.tasksArray,
     });
   }
