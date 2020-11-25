@@ -8,6 +8,8 @@ export class getJikan {
   constructor(private http: HttpClient) {}
 
   async searchAnime(q: string) {
-    return await this.http.get(`${this.ENDPOINT}anime?q=${q}`).toPromise();
+    return await this.http
+      .get(`${this.ENDPOINT}anime?q=${q}&rated=pg13`)
+      .toPromise();
   }
 }

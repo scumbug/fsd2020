@@ -19,6 +19,7 @@ import { getJikan } from './services/getJikan.service';
 //import lottie
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
+import { dbSvc } from './services/dbSvc.service';
 
 export function playerFactory() {
   return player;
@@ -28,7 +29,7 @@ const ROUTES: Routes = [
   { path: '', component: MainComponent },
   { path: 'searchlist', component: SearchListComponent },
   { path: 'search', component: SearchComponent },
-  { path: 'result', component: ResultComponent },
+  { path: 'search/:type/:q', component: ResultComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
@@ -50,7 +51,7 @@ const ROUTES: Routes = [
     MaterialModule,
     LottieModule.forRoot({ player: playerFactory }),
   ],
-  providers: [getJikan],
+  providers: [getJikan, dbSvc],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

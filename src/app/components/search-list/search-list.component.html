@@ -4,12 +4,10 @@
 </div>
 <hr>
 <div class="row justify-content-center">
-    <div class=" list-group">
-        <a href="#" class="list-group-item list-group-item-action">
-            Cras justo odio
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+    <div class="col m-auto">
+        <div class=" list-group">
+            <a class="list-group-item list-group-item-action" [routerLink]="['/search',search.type,search.q]"
+                *ngFor="let search of searches">{{search.q}}</a>
+        </div>
     </div>
 </div>
