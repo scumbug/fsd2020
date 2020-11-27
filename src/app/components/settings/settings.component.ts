@@ -11,6 +11,7 @@ import { dbSvc } from 'src/app/services/db.service';
 })
 export class SettingsComponent implements OnInit {
   settings: FormGroup;
+  keyStatus: boolean;
   constructor(
     private fb: FormBuilder,
     private db: dbSvc,
@@ -22,6 +23,7 @@ export class SettingsComponent implements OnInit {
       name: 'newsapi',
       key: this.fb.control('', [Validators.required]),
     });
+    this.hasKey().then((bool) => (this.keyStatus = bool));
   }
 
   saveKey() {
@@ -33,6 +35,7 @@ export class SettingsComponent implements OnInit {
   deleteKey() {
     //delete API key
     this.db.deleteKey();
+    this.keyStatus = false;
   }
 
   async hasKey() {
