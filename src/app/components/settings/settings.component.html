@@ -7,8 +7,8 @@
     </form>
 </div>
 <div class="p-d-flex p-jc-between">
-    <button *ngIf="!hasKey()" pButton type="button" label="Back" routerLink="['/countries']"></button>
+    <button *ngIf="hasKey()" pButton type="button" label="Back" routerLink="['/countries']"></button>
     <button pButton type="button" label="Add" (click)="saveKey()" [disabled]="settings.invalid"></button>
-    <button *ngIf="!hasKey()" pButton type="button" label="Delete" (click)="deleteKey()"
+    <button *ngIf="hasKey()" pButton type="button" label="Delete" (click)="deleteKey()"
         [disabled]="settings.invalid"></button>
 </div>
