@@ -1,0 +1,14 @@
+<div class="p-col p-fluid">
+    <form [formGroup]="settings">
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText formControlName="key">
+            <label for="float-input">API Key</label>
+        </span>
+    </form>
+</div>
+<div class="p-d-flex p-jc-between">
+    <button *ngIf="!hasKey()" pButton type="button" label="Back" routerLink="['/countries']"></button>
+    <button pButton type="button" label="Add" (click)="saveKey()" [disabled]="settings.invalid"></button>
+    <button *ngIf="!hasKey()" pButton type="button" label="Delete" (click)="deleteKey()"
+        [disabled]="settings.invalid"></button>
+</div>
