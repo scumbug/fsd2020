@@ -1,0 +1,18 @@
+<form [formGroup]="form">
+    Query: <input type="text" formControlName="q">
+    <button (click)="onSubmit()">Submit</button>
+</form>
+
+<ng-container *ngIf="result">
+    Order id: {{result.order_id}} <br>
+    Customer id: {{result.customer_id}} <br>
+    Date: {{result.date | date: "dd/MM/YYYY"}} <br>
+    Total Quantity: {{result.total_quantity}} <br>
+    Total Price: {{result.total_price}} <br>
+    Total Discount: {{result.total_discount}} <br>
+    Total Price: {{result.total_cost}} <br>
+</ng-container>
+
+<ng-container *ngIf="!result">
+    No record found
+</ng-container>
