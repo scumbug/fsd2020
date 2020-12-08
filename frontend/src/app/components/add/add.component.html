@@ -1,0 +1,10 @@
+<form [formGroup]="rsvpForm">
+    Name: <input type="text" formControlName="name"><br>
+    Email: <input type="text" formControlName="email"><br>
+    Phone: <input type="text" formControlName="phone"><br>
+    Status: <select name="status" formControlName="status">
+        <option value="Count me in!">Count me in!</option>
+        <option value="Next Time">Next Time</option>
+    </select><br>
+    <button (click)="onSubmit()">Submit</button>
+</form>
