@@ -7,21 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 //declare SQL statement
-const SQL_GET_ORDER_DETAILS = `
-    SELECT
-        orders.id,
-        orders.order_date,
-        orders.customer_id,
-        order_details.quantity,
-        order_details.unit_price,
-        order_details.discount,
-        products.standard_cost
-    FROM orders
-    JOIN order_details
-    ON orders.id = order_details.order_id 
-    JOIN products
-    ON products.id = order_details.product_id
-    WHERE orders.id = ?`;
+const SQL_GET_ORDER_TOTALS = `SELECT * FROM order_totals WHERE order_id = ?`;
 
 //declare mysql pool
 const db = mysql.createPool({
@@ -50,7 +36,7 @@ const getQuery = (sql, pool) => {
 };
 
 //declare SQL query
-const getOrder = getQuery(SQL_GET_ORDER_DETAILS, db);
+const getOrder = getQuery(SQL_GET_ORDER_TOTALS, db);
 
 //create express instance
 const app = express();
@@ -63,23 +49,9 @@ app.get('/', (req, res) => {
 //GET order
 app.get('/order/total/:orderID', async (req, res) => {
 	const data = await getOrder(req.params.orderID);
-	let total = 0;
-	let discount = 0;
-	let cost_price = 0;
-	data.forEach((record) => {
-		total += record.quantity * record.unit_price;
-		discount += record.quantity * record.cost_price;
-		cost_price += record.quantity * record.standard_cost;
-	});
 	res.status(200);
 	res.type('application/json');
-	res.send({
-		total,
-		discount,
-		cost_price,
-		order_id: data[0].order_id,
-		customer_id: data[0].customer_id,
-	});
+	res.send(data);
 });
 
 //start server
