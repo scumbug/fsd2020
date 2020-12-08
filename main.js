@@ -19,8 +19,8 @@ const SQL_GET_ORDER_DETAILS = `
     FROM orders
     JOIN order_details
     ON orders.id = order_details.order_id 
-    LEFT JOIN products
-    ON order_details.inventory_id  = products.id
+    JOIN products
+    ON products.id = order_details.product_id
     WHERE orders.id = ?`;
 
 //declare mysql pool
