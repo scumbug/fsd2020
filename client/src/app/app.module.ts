@@ -5,20 +5,29 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TodoComponent } from './component/todo/todo.component';
-import { TodoDetailsComponent } from './component/todo-details/todo-details.component';
+import { FormComponent } from './component/form/form.component';
+import { EditComponent } from './component/edit/edit.component';
+import { CreateComponent } from './component/create/create.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconsModule } from './icons.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoComponent,
-    TodoDetailsComponent
+    FormComponent,
+    EditComponent,
+    CreateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IconsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
