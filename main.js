@@ -53,21 +53,15 @@ const SQL_GET_STATUS_LIST = 'SELECT * FROM northwind.orders_status';
 const SQL_GET_PRODUCT_LIST = 'SELECT id,product_name,list_price FROM products';
 // insert data into orders
 const SQL_INSERT_ORDER = `INSERT INTO orders(
-        id,
         employee_id,
         customer_id,
         shipper_id,
-        ship_name,
-        ship_address,
-        ship_city,
-        ship_state_province,
-        ship_zip_postal_code,
-        ship_country_region,
-        tax_rate,
-        status_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+        status_id) VALUES (?,?,?,?)`;
 // insert order details
 const SQL_INSERT_ORDER_DETAILS =
 	'INSERT INTO order_details(order_id,product_id,quantity,unit_price,status_id) VALUES (?,?,?,?,?)';
+// get product prices
+const SQL_GET_PRODUCT_PRICE = 'SELECT list_price FROM products WHERE id = ?';
 
 //SQL queries
 const getEmployee = getQuery(SQL_GET_EMP_LIST, db);
@@ -75,6 +69,7 @@ const getCustomer = getQuery(SQL_GET_CUST_LIST, db);
 const getShipper = getQuery(SQL_GET_SHIPPER_LIST, db);
 const getStatus = getQuery(SQL_GET_STATUS_LIST, db);
 const getProduct = getQuery(SQL_GET_PRODUCT_LIST, db);
+const getProductPrice = getQuery(SQL_GET_PRODUCT_PRICE, db);
 
 //start cors
 app.use(cors());
@@ -106,27 +101,60 @@ app.use(bodyParser.json({ limit: '50mb' }));
 //app logic
 app.post('/order', async (req, res) => {
 	//start order transaction
-	console.log('post called');
-	console.log(req.body);
+	const data = req.body;
 	const conn = await db.getConnection();
 	try {
 		//transaction wrapper
 		await conn.beginTransaction();
 
-		//insert record into orders
-		//let [t] = await conn.query(SQL_INSERT_ORDER, [2, 2, 1, 0]);
+		//insert record into orders [employee_id,customer_id,shipper_id,status_id]
+		let [t] = await conn.query(SQL_INSERT_ORDER, [
+			data.employee_id,
+			data.customer_id,
+			data.shipper_id,
+			data.status_id,
+		]);
 
-		//insert record(s) into orders_details
-		//[t] = await conn.query(SQL_INSERT_ORDER_DETAILS, [t.insertId, 3, 1, 50, 0]);
+		const last = t.insertId;
+
+		for (let line of data.orderDetails) {
+			const [[price]] = await getProductPrice(line.product_id);
+
+			//insert record(s) into orders_details [order_id,product_id,quantity,unit_price,status_id]
+			t = await conn.query(SQL_INSERT_ORDER_DETAILS, [
+				last,
+				line.product_id,
+				line.quantity,
+				price.list_price,
+				line.status_id,
+			]);
+		}
+
+		// await data.orderDetails.forEach(async (line) => {
+		// 	//get product price
+		// 	const [[price]] = await conn.query(SQL_GET_PRODUCT_PRICE, [
+		// 		line.product_id,
+		// 	]);
+
+		// 	//insert record(s) into orders_details [order_id,product_id,quantity,unit_price,status_id]
+		// 	t = await conn.query(SQL_INSERT_ORDER_DETAILS, [
+		// 		last,
+		// 		line.product_id,
+		// 		line.quantity,
+		// 		price,
+		// 		line.status_id,
+		// 	]);
+		// });
 
 		//transaction wrapper
 		await conn.commit();
 	} catch (e) {
 		conn.rollback();
+		res.status(500).end;
 	} finally {
 		conn.release();
+		res.status(200).end;
 	}
-	res.status(200).end;
 });
 
 //start server

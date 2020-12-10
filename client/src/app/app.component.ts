@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     this.http
       .post('http://localhost:3000/order', this.orderForm.value, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
       })
       .toPromise();
