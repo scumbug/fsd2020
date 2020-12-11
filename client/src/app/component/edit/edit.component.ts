@@ -14,7 +14,9 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.create = false;
-    this.getTodo(20).then((res) => (this.editTodo = res));
+    this.getTodo(20).then((res) => {
+      this.editTodo = res;
+    });
   }
 
   async getTodo(id: number): Promise<Todo> {

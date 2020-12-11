@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Todo } from 'src/app/models.interface';
 
 @Component({
   selector: 'app-form',
@@ -11,6 +12,7 @@ export class FormComponent implements OnInit {
   todoForm: FormGroup;
   tasksArray: FormArray;
   @Input() create: boolean; // true: create, false: edit
+  @Input() editTodo: Todo;
   @ViewChild('upload') upload: ElementRef;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
