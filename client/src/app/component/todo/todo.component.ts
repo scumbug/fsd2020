@@ -24,7 +24,9 @@ export class TodoComponent implements OnInit {
     this.router.navigate(['/create']);
   }
 
-  onEdit() {}
+  onEdit(id: number) {
+    this.router.navigate(['/edit', id]);
+  }
 
   async onDelete(id: number, i: number) {
     await this.http.get(`http://localhost:3000/delete/${id}`).toPromise();

@@ -12,7 +12,25 @@ export class FormComponent implements OnInit {
   todoForm: FormGroup;
   tasksArray: FormArray;
   @Input() create: boolean; // true: create, false: edit
-  @Input() editTodo: Todo;
+  @Input()
+  set editTodo(t: Todo) {
+    if (t) {
+      this.todoForm.patchValue({
+        id: t.id,
+        title: t.title,
+      });
+
+      t.tasks.forEach((task) => {
+        this.tasksArray.push(
+          this.fb.group({
+            description: this.fb.control(task.description),
+            priority: this.fb.control(task.priority),
+          })
+        );
+      });
+    }
+  }
+
   @ViewChild('upload') upload: ElementRef;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
@@ -51,5 +69,9 @@ export class FormComponent implements OnInit {
     data.set('upload', this.upload.nativeElement.files[0]);
     data.set('form', JSON.stringify(this.todoForm.value));
     await this.http.post<any>('http://localhost:3000/submit', data).toPromise();
+  }
+
+  debug(): void {
+    console.log(this.editTodo);
   }
 }

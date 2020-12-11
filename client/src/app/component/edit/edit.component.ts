@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Todo } from 'src/app/models.interface';
 
 @Component({
@@ -10,11 +11,11 @@ import { Todo } from 'src/app/models.interface';
 export class EditComponent implements OnInit {
   editTodo: Todo;
   create: boolean;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private actRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.create = false;
-    this.getTodo(20).then((res) => {
+    this.getTodo(this.actRoute.snapshot.params['id']).then((res) => {
       this.editTodo = res;
     });
   }

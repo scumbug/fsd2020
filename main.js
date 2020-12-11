@@ -76,8 +76,6 @@ const app = express();
 
 //setup bodyparser and cors
 app.use(cors());
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(bodyParser.json({ limit: '50mb' }));
 
 //get todo list
 app.get('/todos', async (req, res) => {

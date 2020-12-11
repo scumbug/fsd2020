@@ -8,7 +8,7 @@
                 <input class="form-control" type="text" name="title" formControlName="title">
             </div>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" *ngIf="create">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="upload">Upload</span>
@@ -42,3 +42,4 @@
         </div>
     </div>
 </form>
+<button class="btn btn-danger" (click)="debug()">debug</button>

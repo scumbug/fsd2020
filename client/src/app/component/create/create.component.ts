@@ -16,8 +16,8 @@ export class CreateComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    bsCustomFileInput.init();
     this.create = true;
+    bsCustomFileInput.init();
   }
 
   async onClick(): Promise<void> {
