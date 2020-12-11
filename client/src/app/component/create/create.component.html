@@ -9,4 +9,7 @@
     </div>
 </div>
 <hr>
-<app-form></app-form>
+<app-form [create]="create" #createTodo></app-form>
+<div class="d-flex justify-content-center">
+    <button class="btn btn-success mt-2" (click)="onClick()">Create</button>
+</div>

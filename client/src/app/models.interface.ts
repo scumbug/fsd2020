@@ -7,7 +7,7 @@ export interface Task {
 export interface Todo {
   id: number;
   title: string;
-  tasks: Task[];
+  image: string;
 }
 
 export enum Priority {

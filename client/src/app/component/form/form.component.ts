@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -9,8 +10,10 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 export class FormComponent implements OnInit {
   todoForm: FormGroup;
   tasksArray: FormArray;
+  @Input() create: boolean; // true: create, false: edit
+  @ViewChild('upload') upload: ElementRef;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.todoForm = this.createForm();
@@ -27,7 +30,7 @@ export class FormComponent implements OnInit {
   private createTask(): FormGroup {
     return this.fb.group({
       description: this.fb.control(''),
-      priority: this.fb.control(0),
+      priority: this.fb.control(-1),
     });
   }
 
@@ -37,5 +40,14 @@ export class FormComponent implements OnInit {
 
   deleteTask(i: number): void {
     this.tasksArray.removeAt(i);
+  }
+
+  async addTodo(): Promise<void> {
+    console.log(this.todoForm.value);
+    //handle upload
+    const data = new FormData();
+    data.set('upload', this.upload.nativeElement.files[0]);
+    data.set('form', JSON.stringify(this.todoForm.value));
+    await this.http.post<any>('http://localhost:3000/submit', data).toPromise();
   }
 }

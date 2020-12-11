@@ -10,6 +10,7 @@ import { EditComponent } from './component/edit/edit.component';
 import { CreateComponent } from './component/create/create.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconsModule } from './icons.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { IconsModule } from './icons.module';
     FormsModule,
     ReactiveFormsModule,
     IconsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
