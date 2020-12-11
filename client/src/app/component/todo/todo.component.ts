@@ -26,7 +26,9 @@ export class TodoComponent implements OnInit {
 
   onEdit() {}
 
-  onDelete(id: number) {
-    this.http.get(`http://localhost:3000/delete/${id}`);
+  async onDelete(id: number, i: number) {
+    await this.http.get(`http://localhost:3000/delete/${id}`).toPromise();
+    this.todos.splice(i, 1);
+    console.log(this.todos);
   }
 }

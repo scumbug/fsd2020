@@ -25,11 +25,15 @@ const db = mysql.createPool({
 const SQL_INSERT_TODO = 'INSERT INTO todo(title,image) VALUES (?,?)';
 const SQL_INSERT_TASK =
 	'INSERT INTO task(todo_id,description,priority) VALUES (?,?,?)';
-const SQL_GET_TODO = 'SElECT * FROM todo';
+const SQL_GET_TODOS = 'SELECT * FROM todo';
+const SQL_GET_TODO = 'SELECT * FROM todo where id = ?';
 const SQL_DELETE_TODO = 'DELETE FROM todo WHERE id = ?';
+const SQL_GET_TASK = 'SELECT * FROM task WHERE todo_id = ?';
 
+const getTodos = getQuery(SQL_GET_TODOS, db);
 const getTodo = getQuery(SQL_GET_TODO, db);
 const deleteTodo = getQuery(SQL_DELETE_TODO, db);
+const getTasks = getQuery(SQL_GET_TASK, db);
 
 //
 // S3 setup
@@ -77,7 +81,14 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 //get todo list
 app.get('/todos', async (req, res) => {
-	res.status(200).json(await getTodo());
+	res.status(200).json(await getTodos());
+});
+
+//get todo details
+app.get('/todo/:id', async (req, res) => {
+	let [todo] = await getTodo(req.params.id);
+	todo.tasks = await getTasks(req.params.id);
+	res.status(200).json(todo);
 });
 
 //delete todo
