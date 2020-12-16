@@ -23,6 +23,7 @@ export class FormComponent implements OnInit {
       t.tasks.forEach((task) => {
         this.tasksArray.push(
           this.fb.group({
+            id: task.id,
             description: this.fb.control(task.description),
             priority: this.fb.control(task.priority),
           })
@@ -42,6 +43,7 @@ export class FormComponent implements OnInit {
   createForm(): FormGroup {
     this.tasksArray = this.fb.array([]);
     return this.fb.group({
+      id: null,
       title: this.fb.control(''),
       tasks: this.tasksArray,
     });
@@ -66,12 +68,13 @@ export class FormComponent implements OnInit {
     console.log(this.todoForm.value);
     //handle upload
     const data = new FormData();
-    data.set('upload', this.upload.nativeElement.files[0]);
+    if (this.upload != undefined)
+      data.set('upload', this.upload.nativeElement.files[0]);
     data.set('form', JSON.stringify(this.todoForm.value));
     await this.http.post<any>('http://localhost:3000/submit', data).toPromise();
   }
 
   debug(): void {
-    console.log(this.editTodo);
+    console.log(this.todoForm.value);
   }
 }

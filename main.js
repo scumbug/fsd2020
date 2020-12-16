@@ -5,7 +5,6 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
-const bodyParser = require('body-parser');
 const { getQuery } = require('./helper');
 require('dotenv').config();
 
@@ -22,9 +21,10 @@ const db = mysql.createPool({
 //
 //SQL statements
 //
-const SQL_INSERT_TODO = 'INSERT INTO todo(title,image) VALUES (?,?)';
-const SQL_INSERT_TASK =
-	'INSERT INTO task(todo_id,description,priority) VALUES (?,?,?)';
+const SQL_UPSERT_TODO =
+	'INSERT INTO todo(id,title,image) VALUES (?,?,?) ON DUPLICATE KEY UPDATE title = ?';
+const SQL_UPSERT_TASK =
+	'INSERT INTO task(id,todo_id,description,priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE description = ? , priority = ?';
 const SQL_GET_TODOS = 'SELECT * FROM todo';
 const SQL_GET_TODO = 'SELECT * FROM todo where id = ?';
 const SQL_DELETE_TODO = 'DELETE FROM todo WHERE id = ?';
@@ -103,16 +103,26 @@ app.post('/submit', upload.single('upload'), async (req, res) => {
 	try {
 		await conn.beginTransaction();
 
-		let [t] = await conn.query(SQL_INSERT_TODO, [
+		//handle upload
+		const file = req.file ? req.file.location : '';
+
+		// INSERT: id,title,image OR UPDATE: title
+		let [t] = await conn.query(SQL_UPSERT_TODO, [
+			data.id,
 			data.title,
-			req.file.location,
+			file,
+			data.title,
 		]);
 
 		const last = t.insertId;
 
 		for (let task of data.tasks) {
-			t = await conn.query(SQL_INSERT_TASK, [
+			// INSERT: id,todo_id,description,priority OR UPDATE: description, priority
+			t = await conn.query(SQL_UPSERT_TASK, [
+				task.id,
 				last,
+				task.description,
+				parseInt(task.priority),
 				task.description,
 				parseInt(task.priority),
 			]);
@@ -120,7 +130,7 @@ app.post('/submit', upload.single('upload'), async (req, res) => {
 
 		await conn.commit();
 	} catch (error) {
-		console.log('rollingback');
+		console.log(error);
 		await conn.rollback();
 	} finally {
 		await conn.release();
