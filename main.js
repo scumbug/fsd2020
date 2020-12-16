@@ -7,6 +7,8 @@ require('dotenv').config();
 
 // declare PORT and constants
 const PORT = process.env.PORT || 3000;
+const MDB = process.env.MONGO_DB;
+const MC = process.env.MONGO_COLLECTION;
 
 // init mongo and mysql
 const mongo = mg.initMongo(process.env.MONGO_URI);
@@ -14,9 +16,11 @@ const db = sql.initMySQL();
 
 // SQL stmt
 const SQL_GET_GAME_BY_ID = 'SELECT * FROM game WHERE gid = ?';
-
 // SQL queries
 const getGame = sql.mkQuery(SQL_GET_GAME_BY_ID, db);
+
+// Mongo queries
+const getReviews = mg.getReviews(mongo, MDB, MC);
 
 // declare express instance
 const app = express();
@@ -41,7 +45,7 @@ app.get('/game/:id', async (req, res) => {
 		//pull game from MYSQL
 		const [game] = await getGame(req.params.id);
 		//pull reviews from Mongo
-		const [reviews] = await mg.getReviews(mongo, game.gid);
+		const [reviews] = await getReviews(game.gid);
 		//construct object and return as JSON
 		res.status(200).json({ ...game, ...reviews });
 	} catch (e) {

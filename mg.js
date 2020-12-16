@@ -20,30 +20,33 @@ const checkMongo = async (mongo) => {
 };
 
 // get reviews JSON and av ratings
-const getReviews = (client, id) => {
-	return client
-		.db(process.env.MONGO_DB)
-		.collection(process.env.MONGO_COLLECTION)
-		.aggregate([
-			{
-				$match: { ID: id },
-			},
-			{
-				$group: {
-					_id: '$ID',
-					reviews: { $push: '$_id' },
-					average_ratings: { $push: '$rating' },
+const getReviews = (client, db, collection) => {
+	const r = (id) => {
+		return client
+			.db(db)
+			.collection(collection)
+			.aggregate([
+				{
+					$match: { ID: id },
 				},
-			},
-			{
-				$project: {
-					_id: 0,
-					reviews: 1,
-					average_ratings: { $avg: '$average_ratings' },
+				{
+					$group: {
+						_id: '$ID',
+						reviews: { $push: '$_id' },
+						average_ratings: { $push: '$rating' },
+					},
 				},
-			},
-		])
-		.toArray();
+				{
+					$project: {
+						_id: 0,
+						reviews: 1,
+						average_ratings: { $avg: '$average_ratings' },
+					},
+				},
+			])
+			.toArray();
+	};
+	return r;
 };
 
 module.exports = {
