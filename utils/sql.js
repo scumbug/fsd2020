@@ -5,11 +5,19 @@ const mysql = require('mysql2/promise');
 // SQL Utils
 //
 
-// init MySQL with params
+/**
+ * Init MySQL with optional params
+ * @param {Object} params
+ * @param {string} params.host
+ * @param {string} params.port
+ * @param {string} params.user
+ * @param {string} params.password
+ * @param {string} params.database
+ */
 const init = (params = {}) => {
 	return mysql.createPool({
 		host: params.host || process.env.DB_HOST || 'localhost',
-		port: params.host || process.env.DB_PORT || 3306,
+		port: params.port || process.env.DB_PORT || 3306,
 		user: params.user || process.env.DB_USER,
 		password: params.password || process.env.DB_PWD,
 		database: params.database || process.env.DB_NAME,
@@ -19,7 +27,10 @@ const init = (params = {}) => {
 	});
 };
 
-// check if MySQL is alive
+/**
+ * Check if MySQL is alive
+ * @param {Pool} pool
+ */
 const check = (pool) => {
 	return new Promise((resolve, reject) => {
 		pool
@@ -37,8 +48,16 @@ const check = (pool) => {
 	});
 };
 
-// Query helper
+/**
+ * Generate SQL query function
+ * @param {string} sql - SQL Statement
+ * @param {Pool} pool
+ */
 const mkQuery = (sql, pool) => {
+	/**
+	 * Call database with optional param array to pass in as values
+	 * @param {String[]} params
+	 */
 	const result = async (params) => {
 		const conn = await pool.getConnection();
 		try {

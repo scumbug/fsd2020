@@ -3,7 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const mg = require('./utils/mg'); // Mongo Utils
 const sql = require('./utils/sql'); // MySQL Utils
-//const s3 = require('./utils/s3'); // S3 Utils
+const s3 = require('./utils/s3'); // S3 Utils
+const mult = require('./utils/multer');
 require('dotenv').config();
 
 // declare PORT and constants
@@ -11,9 +12,10 @@ const PORT = process.env.PORT || 3000;
 const MDB = process.env.MONGO_DB;
 const MC = process.env.MONGO_COLLECTION;
 
-// init mongo and mysql
+// init plugins
 const mongo = mg.init(process.env.MONGO_URI);
 const db = sql.init();
+const multer = mult.init('memory', 'test');
 
 // SQL stmt
 const SQL_GET_GAME_BY_ID = 'SELECT * FROM game WHERE gid = ?';
@@ -28,6 +30,11 @@ const app = express();
 
 // init middlewares
 app.use(morgan('tiny'));
+
+app.post('/', multer.single('test'), (req, res) => {
+	console.log(req.file);
+	res.status(200).end();
+});
 
 /* 
     GET /game/:id

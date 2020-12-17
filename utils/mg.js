@@ -5,7 +5,11 @@ const { MongoClient } = require('mongodb');
 // Helper Functions
 //
 
-// init Mongo via URI
+/**
+ * Init mongo client
+ * @summary eg: mongodb://localhost:27017
+ * @param {string} URI
+ */
 const init = (URI) => {
 	return new MongoClient(URI, {
 		useNewUrlParser: true,
@@ -13,7 +17,11 @@ const init = (URI) => {
 	});
 };
 
-// check if Mongo is alive
+/**
+ * check if Mongo is alive
+ * @summary Promise.resolve() if successful, Promise.reject() when failed
+ * @returns Promise
+ */
 const check = (mongo) => {
 	return new Promise((resolve, reject) => {
 		mongo
@@ -26,7 +34,12 @@ const check = (mongo) => {
 	});
 };
 
-// get reviews JSON and av ratings
+/**
+ * Get reviews and av ratings
+ * @param {MongoClient} client
+ * @param {string} db - MongoDB Database Name
+ * @param {string} collection - MongoDB Collection Name
+ */
 const getReviews = (client, db, collection) => {
 	const closure = (id) => {
 		return client
