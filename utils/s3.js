@@ -27,8 +27,8 @@ const check = () => {
 	});
 };
 
-const upload = (file, s3) => {
-	const closure = (bucket = null) => {
+const upload = (bucket = null, s3) => {
+	const closure = (file) => {
 		return new Promise((resolve, reject) => {
 			//gen unique keyname
 			const key = `${uuid().replace('-', '')}_${file.originalname}`;
