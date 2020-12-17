@@ -1,8 +1,9 @@
 // import libs
 const express = require('express');
 const morgan = require('morgan');
-const mg = require('./mg'); // Mongo Utils
-const sql = require('./sql'); // MySQL Utils
+const mg = require('./utils/mg'); // Mongo Utils
+const sql = require('./utils/sql'); // MySQL Utils
+//const s3 = require('./utils/s3'); // S3 Utils
 require('dotenv').config();
 
 // declare PORT and constants
@@ -11,8 +12,8 @@ const MDB = process.env.MONGO_DB;
 const MC = process.env.MONGO_COLLECTION;
 
 // init mongo and mysql
-const mongo = mg.initMongo(process.env.MONGO_URI);
-const db = sql.initMySQL();
+const mongo = mg.init(process.env.MONGO_URI);
+const db = sql.init();
 
 // SQL stmt
 const SQL_GET_GAME_BY_ID = 'SELECT * FROM game WHERE gid = ?';
@@ -54,11 +55,15 @@ app.get('/game/:id', async (req, res) => {
 });
 
 // start server
-Promise.all([mg.checkMongo(mongo), sql.checkMySQL(db)])
+Promise.all([sql.check(db), mg.check(mongo)])
 	.then(() => {
 		app.listen(
 			PORT,
 			console.log(`App has started on ${PORT} at ${new Date()}`)
 		);
 	})
-	.catch((e) => console.log(e));
+	.catch((e) => {
+		console.log(e);
+		console.log('Killing app...');
+		process.exit();
+	});

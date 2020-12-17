@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 //
 
 // init MySQL with params
-const initMySQL = (params = {}) => {
+const init = (params = {}) => {
 	return mysql.createPool({
 		host: params.host || process.env.DB_HOST || 'localhost',
 		port: params.host || process.env.DB_PORT || 3306,
@@ -20,7 +20,7 @@ const initMySQL = (params = {}) => {
 };
 
 // check if MySQL is alive
-const checkMySQL = (pool) => {
+const check = (pool) => {
 	return new Promise((resolve, reject) => {
 		pool
 			.getConnection()
@@ -29,10 +29,11 @@ const checkMySQL = (pool) => {
 				return Promise.all([Promise.resolve(conn), conn.ping()]);
 			})
 			.then((conn) => {
+				console.log('MySQL is alive!');
 				conn[0].release();
 				resolve();
 			})
-			.catch((e) => reject(e));
+			.catch((e) => reject('Unable to connect to MySQL DB'));
 	});
 };
 
@@ -52,4 +53,4 @@ const mkQuery = (sql, pool) => {
 	return result;
 };
 
-module.exports = { initMySQL, checkMySQL, mkQuery };
+module.exports = { init, check, mkQuery };

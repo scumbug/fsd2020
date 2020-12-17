@@ -6,7 +6,7 @@ const { MongoClient } = require('mongodb');
 //
 
 // init Mongo via URI
-const initMongo = (URI) => {
+const init = (URI) => {
 	return new MongoClient(URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -14,14 +14,21 @@ const initMongo = (URI) => {
 };
 
 // check if Mongo is alive
-const checkMongo = async (mongo) => {
-	console.log('Connecting to mongo...');
-	return await mongo.connect();
+const check = (mongo) => {
+	return new Promise((resolve, reject) => {
+		mongo
+			.connect()
+			.then((r) => {
+				console.log('MongoDB is alive!');
+				resolve();
+			})
+			.catch((e) => reject('Unable to connect to MongoDB'));
+	});
 };
 
 // get reviews JSON and av ratings
 const getReviews = (client, db, collection) => {
-	const r = (id) => {
+	const closure = (id) => {
 		return client
 			.db(db)
 			.collection(collection)
@@ -46,11 +53,11 @@ const getReviews = (client, db, collection) => {
 			])
 			.toArray();
 	};
-	return r;
+	return closure;
 };
 
 module.exports = {
-	initMongo,
-	checkMongo,
+	init,
+	check,
 	getReviews,
 };
