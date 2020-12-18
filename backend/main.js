@@ -24,17 +24,23 @@ const mongo = mg.init(process.env.MONGO_URI);
 const SQL_CHECK_CRED =
 	'SELECT count(*) as auth FROM user WHERE user_id = ? AND password = ?';
 
+//
 // Helper Functions
+//
+
+// Usage uploadS3(filename)
 const uploadS3 = aws.upload('fsd', s3);
+// Usage insertFFT(jsonobject)
 const insertFFT = mg.insertDoc(
 	mongo,
 	process.env.MONGO_DB,
 	process.env.MONGO_COLLECTION
 );
+// Usage auth(params)
 const auth = sql.mkQuery(SQL_CHECK_CRED, db);
 
 // Start logging
-app.use(morgan('tiny'));
+app.use(morgan('combined'));
 
 // POST /auth - Authenticate login
 app.post('/auth', express.json(), async (req, res) => {
