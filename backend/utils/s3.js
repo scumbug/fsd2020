@@ -1,6 +1,6 @@
 // import libs
 const AWS = require('aws-sdk');
-const { v4: uuid } = require('uuid');
+const fs = require('fs');
 
 //
 // S3 Utils
@@ -47,27 +47,41 @@ const upload = (bucket = null, s3) => {
 	 * Uploads to S3
 	 * @param {File} file
 	 */
-	const closure = (file) => {
+	const closure = async (file) => {
 		return new Promise((resolve, reject) => {
-			//gen unique keyname
-			const key = `${uuid().toString.substring(0, 8)}_${file.originalname}`;
-			//set s3 params
-			const params = {
-				Bucket: bucket || process.env.S3_BUCKET,
-				Key: key,
-				Body: file.buffer,
-				ACL: 'readonly', //special ACL for minio
-				ContentType: file.mimetype,
-				ContentLength: file.size,
-			};
-			s3.putObject(params, (err, result) => {
-				if (err == null) {
-					resolve(key);
-				} else reject(err);
+			fs.readFile(file.path, async (err, buff) => {
+				if (null != err) {
+					console.error('file read error: ', err);
+				}
+				//gen unique keyname
+				const key = file.filename;
+				//set s3 params
+				const params = {
+					Bucket: bucket || process.env.S3_BUCKET,
+					Key: key,
+					Body: buff,
+					ACL: 'readonly', //special ACL for minio
+					ContentType: file.mimetype,
+					ContentLength: file.size,
+				};
+				s3.putObject(params, (err, result) => {
+					if (err == null) {
+						resolve(key);
+					} else reject(err);
+				});
 			});
 		});
 	};
 	return closure;
+};
+
+const getBuff = (path) => {
+	fs.readFile(path, async (err, buff) => {
+		if (null != err) {
+			console.error('file read error: ', err);
+		}
+		return await buff;
+	});
 };
 
 module.exports = { init, check, upload };

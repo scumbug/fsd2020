@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { FormService } from './form.service';
 
 const ROUTES: Routes = [
   { path: '', component: LoginComponent },
@@ -29,7 +30,7 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [CameraService, AuthService],
+  providers: [CameraService, AuthService, FormService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

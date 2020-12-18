@@ -40,31 +40,9 @@ const check = (mongo) => {
  * @param {string} db - MongoDB Database Name
  * @param {string} collection - MongoDB Collection Name
  */
-const getReviews = (client, db, collection) => {
-	const closure = (id) => {
-		return client
-			.db(db)
-			.collection(collection)
-			.aggregate([
-				{
-					$match: { ID: id },
-				},
-				{
-					$group: {
-						_id: '$ID',
-						reviews: { $push: '$_id' },
-						average_ratings: { $push: '$rating' },
-					},
-				},
-				{
-					$project: {
-						_id: 0,
-						reviews: 1,
-						average_ratings: { $avg: '$average_ratings' },
-					},
-				},
-			])
-			.toArray();
+const insertDoc = (client, db, collection) => {
+	const closure = (doc) => {
+		return client.db(db).collection(collection).insertOne(doc);
 	};
 	return closure;
 };
@@ -72,5 +50,5 @@ const getReviews = (client, db, collection) => {
 module.exports = {
 	init,
 	check,
-	getReviews,
+	insertDoc,
 };
