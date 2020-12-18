@@ -5,6 +5,7 @@ const sql = require('./utils/sql');
 const mult = require('./utils/multer');
 const aws = require('./utils/s3');
 const mg = require('./utils/mg');
+const sha1 = require('sha1');
 require('dotenv').config();
 
 // Declare PORT and constants
@@ -19,17 +20,17 @@ const upload = mult.init('disk');
 const s3 = aws.init();
 const mongo = mg.init(process.env.MONGO_URI);
 
+// SQL Stmt
+const SQL_CHECK_CRED =
+	'SELECT count(*) as auth FROM user WHERE user_id = ? AND password = ?';
+
+// Helper Functions
 const uploadS3 = aws.upload('fsd', s3);
 const insertFFT = mg.insertDoc(
 	mongo,
 	process.env.MONGO_DB,
 	process.env.MONGO_COLLECTION
 );
-
-// SQL Stmt
-const SQL_CHECK_CRED =
-	'SELECT count(*) as auth FROM user WHERE user_id = ? AND password = ?';
-// SQL queries
 const auth = sql.mkQuery(SQL_CHECK_CRED, db);
 
 // Start logging
@@ -37,12 +38,17 @@ app.use(morgan('tiny'));
 
 // POST /auth - Authenticate login
 app.post('/auth', express.json(), async (req, res) => {
-	//Handle auth here
-	const [authFlag] = await auth([req.body.username, req.body.password]);
-	if (!authFlag.auth) {
-		res.status(401).json({ message: 'Error! Authentication failed!' });
-	} else {
-		res.status(200).json({ message: 'Authentication Success!' });
+	//Handle Auth
+	try {
+		const [authFlag] = await auth([req.body.username, sha1(req.body.password)]);
+		if (!authFlag.auth) {
+			res.status(401).json({ message: 'Error! Authentication failed!' });
+		} else {
+			res.status(200).json({ message: 'Authentication Success!' });
+		}
+	} catch (e) {
+		console.log(e);
+		res.status(500).json({ message: 'Internal Server Error!' });
 	}
 });
 
@@ -51,13 +57,16 @@ app.post('/submit', upload.single('upload'), async (req, res) => {
 	const form = JSON.parse(req.body.form);
 	try {
 		// Do auth
-		const [authFlag] = await auth([form.cred.username, form.cred.password]);
+		const [authFlag] = await auth([
+			form.cred.username,
+			sha1(form.cred.password),
+		]);
 		if (!authFlag.auth) {
 			res.status(401).json({ message: 'Error! Authentication failed!' });
 		} else {
 			// Auth success, upload image
 			const key = await uploadS3(req.file);
-			// Build object to send to mongo
+			// Build object for Mongo
 			const record = {
 				title: form.title,
 				comments: form.comments,
@@ -65,13 +74,13 @@ app.post('/submit', upload.single('upload'), async (req, res) => {
 				timestamp: new Date(),
 			};
 			// Insert into Mongo
-			const mongoinsert = await insertFFT(record);
+			const mgRes = await insertFFT(record);
 			// Delete tmp file
 			await mult.deleteLocal(req.file.path);
 			// Send Response to frontend
 			res
 				.status(200)
-				.json({ message: 'Insert FFT successful', id: mongoinsert.insertedId });
+				.json({ message: 'Insert FFT successful', id: mgRes.insertedId });
 		}
 	} catch (e) {
 		// Catch errors arising from failed S3 and Mongo uploads
@@ -79,6 +88,7 @@ app.post('/submit', upload.single('upload'), async (req, res) => {
 	}
 });
 
+// Mount frontend
 app.use(express.static(`${__dirname}/frontend`));
 
 // Start server

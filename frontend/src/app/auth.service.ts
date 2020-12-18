@@ -9,7 +9,6 @@ export class AuthService {
   cred: Cred;
 
   async login(cred: Cred): Promise<HttpRes> {
-    // Auth logic here
     const body = JSON.stringify(cred);
     try {
       const headers = new HttpHeaders().set('Content-Type', 'application/json');

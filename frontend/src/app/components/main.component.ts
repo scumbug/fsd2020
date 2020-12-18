@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { CameraService } from '../camera.service';
 import { FoodForThought } from '../models';
 import { FormService } from '../form.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -20,14 +21,17 @@ export class MainComponent implements OnInit {
     private cameraSvc: CameraService,
     private fb: FormBuilder,
     private auth: AuthService,
-    private formSvc: FormService
+    private formSvc: FormService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Get selfie
     if (this.cameraSvc.hasImage()) {
       const img = this.cameraSvc.getImage();
       this.imagePath = img.imageAsDataUrl;
     }
+    // Init form
     this.fftForm = this.fb.group({
       title: this.fb.control('', [Validators.required]),
       comments: this.fb.control('', [Validators.required]),
@@ -36,11 +40,22 @@ export class MainComponent implements OnInit {
       ]),
       cred: this.auth.getCred(),
     });
+    // Restore save state of form data if any
+    if (this.formSvc.getForm() != null) {
+      const savedForm = this.formSvc.getForm();
+      this.fftForm.get('title').setValue(savedForm.title);
+      this.fftForm.get('comments').setValue(savedForm.comments);
+    }
+  }
+
+  // Save form state and navigate to take a selfie
+  capture() {
+    this.formSvc.saveForm(this.fftForm.value);
+    this.router.navigate(['/', 'capture']);
   }
 
   clear() {
     this.imagePath = '/assets/cactus.png';
-    //this.fftForm.get('imageCheck').setValue(false);
     this.fftForm.reset();
   }
 

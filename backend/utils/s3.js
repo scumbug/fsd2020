@@ -49,23 +49,25 @@ const upload = (bucket = null, s3) => {
 	 */
 	const closure = async (file) => {
 		return new Promise((resolve, reject) => {
+			// Convert file to buffer
 			fs.readFile(file.path, async (err, buff) => {
 				if (null != err) {
-					console.error('file read error: ', err);
+					reject(err);
 				}
-				//gen unique keyname
 				const key = file.filename;
-				//set s3 params
+				// Set S3 params
 				const params = {
 					Bucket: bucket || process.env.S3_BUCKET,
 					Key: key,
 					Body: buff,
-					ACL: 'readonly', //special ACL for minio
+					ACL: 'readonly', //special ACL for minio, 'public-read' for S3
 					ContentType: file.mimetype,
 					ContentLength: file.size,
 				};
-				s3.putObject(params, (err, result) => {
+				// Start upload
+				await s3.putObject(params, (err, result) => {
 					if (err == null) {
+						// Successful upload, return key name
 						resolve(key);
 					} else reject(err);
 				});
@@ -73,15 +75,6 @@ const upload = (bucket = null, s3) => {
 		});
 	};
 	return closure;
-};
-
-const getBuff = (path) => {
-	fs.readFile(path, async (err, buff) => {
-		if (null != err) {
-			console.error('file read error: ', err);
-		}
-		return await buff;
-	});
 };
 
 module.exports = { init, check, upload };
