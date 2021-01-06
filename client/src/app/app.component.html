@@ -1,0 +1,55 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <form>
+        <div class="form-row align-items-end">
+          <div class="col-auto">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" #name>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary" (click)="toggleConnection(name.value)">{{text}}</button>
+          </div>
+        </div>
+
+        <div class="form-row align-items-end">
+          <div class="col-auto">
+            <label for="message">Message</label>
+            <input type="text" class="form-control" id="message" #message>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary" (click)="send(message.value)">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row justify-content-center">
+    <h1>Chat Log</h1>
+  </div>
+  <div class="mx-5">
+    <ng-container *ngFor="let msg of log">
+
+      <ng-container *ngIf="msg.from != name.value; else elseBlock">
+        <div class="row justify-content-start">
+          <div class="col-2 alert alert-primary" role="alert">
+            {{msg.from}}: {{msg.message}}
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #elseBlock>
+        <div class="row justify-content-end">
+          <div class="col-2 alert alert-success" role="alert">
+            {{msg.from}}: {{msg.message}}
+          </div>
+        </div>
+      </ng-template>
+
+    </ng-container>
+  </div>
+
+</div>
