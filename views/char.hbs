@@ -1,0 +1,32 @@
+<div class="jumbotron">
+    <h1 class="display-4">{{result.name}}</h1>
+    <div class="d-flex">
+        <div class="col-md-auto">
+            <img class="img-thumbnail w-100" src="{{result.thumbnail.path}}/standard_xlarge.{{result.thumbnail.extension}}"
+                alt="">
+        </div>
+        <div class="col">
+            <p class="lead">{{{result.description}}}</p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <p class="lead">Event Appearances: </p>
+    <div class="row row-cols-1 row-cols-md-4">
+    {{#each events}}    
+        <div class="col mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+    </div>
+    <div class="d-flex justify-content-between mt-5">
+        <a class="btn btn-primary" href="/" role="button">Return</a>
+        {{#if official_site}}
+        <a class="btn btn-primary" href="{{official_site}}" role="button">Learn more</a>
+        {{/if}}
+    </div>
+</div>
