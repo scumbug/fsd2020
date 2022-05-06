@@ -1,0 +1,15 @@
+<div class="d-flex align-items-center justify-content-between">
+    <div>
+        <h1>Edit Todo</h1>
+    </div>
+    <div>
+        <button class="btn btn-info" [routerLink]="['/']">
+            <i-bs name="house-fill" height="2rem"></i-bs>
+        </button>
+    </div>
+</div>
+<hr>
+<app-form [create]="create" [editTodo]="editTodo" #edit></app-form>
+<div class="d-flex justify-content-center">
+    <button class="btn btn-success mt-2" (click)="onClick()">Update</button>
+</div>
