@@ -1,0 +1,23 @@
+<div class="container mt-5">
+    <div class="form-group">
+        <h1>Test Form</h1>
+        <input type="text" name="todo" placeholder="Add some stuff here" ngModel #input
+            (keydown.enter)="addVal(input.value)">
+        <button class="btn btn-primary" (click)="addVal(input.value)">Submit</button>
+    </div>
+    <div class="row">
+
+        <ul class="list-instyled">
+            <li *ngFor="let result of todoArr">
+                {{result}}
+                <i class="fas fa-trash" (click)="deleteItem(result)"></i>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <h5>Rando cat img</h5>
+    </div>
+    <div class="row">
+        <img src="assets/cat.jpg" alt="" width="10%">
+    </div>
+</div>
