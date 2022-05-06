@@ -1,0 +1,32 @@
+{{#with result }}
+<div class="jumbotron">
+    <h1 class="display-4">{{title}}</h1>
+    <p class="">by {{authors}}</p>
+    <div class="d-flex flex-wrap">
+        <div class="col-md-auto">
+            <img class="img-thumbnail w-100" src="{{image_url}}" alt="">
+        </div>
+        <div class="col">
+            <p class="lead">{{{description}}}</p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <p class="lead">Rating: {{rating}} ({{rating_count}})</p>
+    <p class="lead">Genre: {{genres }}</p>
+    <p class="lead">No of Pages: {{pages}}</p>
+    <div class="d-flex justify-content-between mt-5">
+        <a class="btn btn-primary" href="#" onclick="window.history.back()" role="button">Return</a>
+        <a href="/" class="btn btn btn-info">
+            <svg class="bi" width="16" height="16" fill="currentColor">
+                <use xlink:href="/assets/bootstrap-icons.svg#house" />
+            </svg>
+            Home
+        </a>
+        <form action="{{book_id}}/reviews" method="post">
+            <button type="submit" class="btn btn-primary">Find Reviews</button>
+            <input type="hidden" name="title" value="{{title}}">
+            <input type="hidden" name="authors" value="{{authors}}">
+        </form>
+    </div>
+</div>
+{{/with}}
