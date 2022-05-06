@@ -1,0 +1,28 @@
+<div class="p-d-flex p-jc-between">
+    <h1>Top Headlines for {{cc}}</h1>
+    <div class="p-my-auto">
+        <button pButton label="Back" styleClass="p-button-secondary" [routerLink]="['/countries']"></button>
+    </div>
+</div>
+
+<ng-container *ngFor="let article of articles">
+    <p-card header="{{article.title}}" subheader="{{article.author}} - {{article.source.name}}"
+        styleClass="p-card-shadow" [style]="{'width': '55rem', 'margin-bottom': '2em'}">
+        <p-header>
+            <img alt="Card" src="{{article.urlToImage}}">
+        </p-header>
+        <small>{{article.publishedAt | date: "MMM d, y, h:mm:ss a"}}</small>
+        <p>{{article.description}}
+        </p>
+        <hr>
+        <small>
+            {{article.content}}
+        </small>
+        <ng-template pTemplate="footer">
+            <a href="{{article.url}}" target="_blank"><button pButton label="Learn More"
+                    icon="pi pi-check"></button></a>
+            <button pButton label="Save" icon="pi pi-file" styleClass="p-button-secondary">
+            </button>
+        </ng-template>
+    </p-card>
+</ng-container>

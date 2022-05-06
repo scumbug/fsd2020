@@ -1,0 +1,19 @@
+<div class="p-col-6 p-text-center p-mx-auto">
+    <h2>Select Country</h2>
+    <button pButton label="Settings" styleClass="p-button-secondary" [routerLink]="['/settings']"></button>
+</div>
+<div class="p-col-6 p-mx-auto">
+    <div *ngIf="!countries">loading...</div>
+    <p-dataView [value]="countries" layout="list">
+        <ng-template let-country pTemplate="listItem">
+            <div class="p-col-12">
+                <a [routerLink]="['/articles',country.code]">
+                    <div class="p-d-flex p-jc-between">
+                        <span>{{country.name}}</span>
+                        <img src="{{country.flag}}" alt="" style="width:20px">
+                    </div>
+                </a>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
