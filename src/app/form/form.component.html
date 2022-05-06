@@ -1,0 +1,40 @@
+<form [formGroup]="todoForm" (ngSubmit)="processForm($event)">
+    <div>
+        <mat-form-field>
+            <mat-label>Description: </mat-label>
+            <input type="text" matInput formControlName="des">
+            <mat-error *ngIf="f.get('des').hasError('required')">
+                Give me a description
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <label for="priority">Priority: </label>
+        <mat-radio-group formControlName="priority">
+            <mat-radio-button *ngFor="let priority of priorities" [value]="priority" style="display: block;">
+                {{priority}}
+            </mat-radio-button>
+            <mat-error *ngIf="f.get('priority').hasError('required') && f.get('priority').hasError('touched')">
+                Give me a priority
+            </mat-error>
+        </mat-radio-group>
+    </div>
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="editdue" [min]="minDate" formControlName="due">
+            <mat-datepicker-toggle matSuffix [for]="editdue"></mat-datepicker-toggle>
+            <mat-datepicker #editdue></mat-datepicker>
+            <mat-error *ngIf="f.get('due').hasError('matDatepickerMin') || f.get('due').hasError('required')">
+                Do something about your dates!
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <ng-container *ngIf="todo?.idx == undefined">
+        <button type="submit" [disabled]="todoForm.invalid" mat-button>Add</button>
+    </ng-container>
+    <ng-container *ngIf="todo?.idx != undefined">
+        <button type="submit" mat-button mat-dialog-close [disabled]="todoForm.invalid">Update</button>
+    </ng-container>
+</form>

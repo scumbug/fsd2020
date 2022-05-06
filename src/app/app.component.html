@@ -1,0 +1,76 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>ToDo App</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div fxflex="50%" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="50px" style="margin-top: 5%">
+    <div>
+        <h1>Add Task</h1>
+        <app-form (emitTodo)="addTodo($event)"></app-form>
+    </div>
+    <div>
+        <h1>My Tasks</h1>
+        <mat-list style="min-width: 300px;">
+            <h1 matSubheader>High</h1>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'high'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="editTodo(idx)">
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>
+                    </mat-action-list>
+                </mat-list-item>
+            </ng-container>
+
+            <mat-divider></mat-divider>
+
+            <div mat-subheader>Medium</div>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'medium'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="editTodo(idx)">
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>
+                    </mat-action-list>
+                </mat-list-item>
+            </ng-container>
+
+            <mat-divider></mat-divider>
+
+            <div mat-subheader>Low</div>
+            <ng-container *ngFor="let todo of todos; index as idx">
+                <mat-list-item *ngIf="todo.priority === 'low'">
+                    <div mat-line>{{todo.des}}</div>
+                    <div mat-line> {{todo.due | date: 'dd MMM'}} </div>
+                    <mat-action-list>
+                        <button mat-icon-button>
+                            <mat-icon> check </mat-icon>
+                        </button>
+                            <button mat-icon-button (click)="editTodo(idx)">
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteTodo(idx)">
+                            <mat-icon> delete </mat-icon>
+                        </button>
+                    </mat-action-list>
+                </mat-list-item>
+            </ng-container>
+        </mat-list>
+    </div>
+</div>
