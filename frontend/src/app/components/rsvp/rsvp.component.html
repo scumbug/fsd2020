@@ -1,0 +1,10 @@
+<ul *ngFor="let rsvp of res">
+    <li>
+        {{rsvp.name}} <br>
+        {{rsvp.email}} <br>
+        {{rsvp.phone}} <br>
+        {{rsvp.status}} <br>
+    </li>
+</ul>
+
+<button type="button" [routerLink]="['/add']">Add entry</button>
