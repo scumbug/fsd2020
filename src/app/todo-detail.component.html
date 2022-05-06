@@ -1,0 +1,9 @@
+<div fxLayout="row" fxLayoutAlign="center start">
+    <app-todo #myTodo [todo]="todo"></app-todo>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px">
+    <button mat-raised-button color="primary" (click)="updateTodo()">Update</button>
+    <button mat-raised-button color="primary" (click)="deleteTodo()">Delete</button>
+    <button mat-raised-button color="primary" [routerLink]="['/']">Back</button>
+</div>
