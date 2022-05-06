@@ -1,0 +1,23 @@
+{
+  "name": "fsddaytwo",
+  "version": "1.0.0",
+  "description": "PCP Full Stack Developer Day 2",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://scumbug@github.com/scumbug/fsddaytwo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scumbug/fsddaytwo/issues"
+  },
+  "homepage": "https://github.com/scumbug/fsddaytwo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0"
+  }
+}
