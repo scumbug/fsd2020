@@ -1,0 +1,31 @@
+<h1>CRUD</h1>
+<form [formGroup]="crudForm" (ngSubmit)="($event)">
+    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+        <div fxLayout="column wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px">
+            <mat-form-field appearance="outline">
+                <mat-label>ID</mat-label>
+                <input matInput placeholder="Item ID" readonly="true" type="number" [value]="item?.id"
+                    formControlName="id" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Item</mat-label>
+                <input matInput placeholder="Item Name" [value]="item?.name" formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Quantity</mat-label>
+                <input matInput placeholder="Item Quantity" type="number" [value]="item?.quantity"
+                    formControlName="quantity" />
+            </mat-form-field>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px">
+            <button type="submit" mat-button (click)="deleteItem()">
+                Delete
+            </button>
+            <button type="button" mat-button (click)="updateItem()">
+                Add/Update
+            </button>
+        </div>
+    </div>
+</form>
