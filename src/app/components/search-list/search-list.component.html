@@ -1,0 +1,13 @@
+<div class="row justify-content-between align-middle m-auto">
+    <h2>Search History</h2>
+    <button type="button" class="btn btn-primary" [routerLink]="['/search']">Search</button>
+</div>
+<hr>
+<div class="row justify-content-center">
+    <div class="col m-auto">
+        <div class=" list-group">
+            <a class="list-group-item list-group-item-action" [routerLink]="['/search',search.type,search.q]"
+                *ngFor="let search of searches">{{search.q}}</a>
+        </div>
+    </div>
+</div>
