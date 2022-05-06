@@ -1,0 +1,13 @@
+<h1><a href="/">Search Again!</a></h1>
+{{#if e}}
+    <h2>Showing you {{ n }} {{ q }}</h2>
+
+    {{#each gifs}}
+        <a href="{{ this.url }}" target="_blank">
+            <img src="{{ this.src }}" alt="{{ this.alt }}">
+        </a>
+    {{/each}}
+
+{{else}}
+    <h2>No gifs can be found for {{ q }}</h2>
+{{/if}}
