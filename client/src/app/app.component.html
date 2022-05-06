@@ -1,0 +1,69 @@
+<div class="container mt-5">
+  <div class="row">
+    <h1>Order Form</h1>
+    <hr>
+  </div>
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="orderForm">
+        <div class="form-group">
+          <label for="employee">Employee</label>
+          <select class="form-control" id="employee" formControlName="employee_id">
+            <option *ngFor="let employee of employees" value={{employee.id}}>{{employee.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="customer">Customer</label>
+          <select class="form-control" id="customer" formControlName="customer_id">
+            <option *ngFor="let cust of customers" value={{cust.id}}>{{cust.company}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="shippers">Shippers</label>
+          <select class="form-control" id="shippers" formControlName="shipper_id">
+            <option *ngFor="let ship of shippers" value={{ship.id}}>{{ship.company}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select class="form-control" id="status" formControlName="status_id">
+            <option *ngFor="let item of status" value={{item.id}}>{{item.status_name}}</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" (click)="addProduct()">Add Line Item</button>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Unit Price</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="orderDetails">
+            <tr *ngFor="let line of orderDetails.controls; index as i" [formGroup]="line">
+              <td>
+                <div class="form-group">
+                  <select class="form-control" id="products" formControlName="product_id">
+                    <option *ngFor="let product of products" value={{product.id}}>
+                      {{product.product_name}}</option>
+                  </select>
+                </div>
+              </td>
+              <td><input type="number" name="quantity" formControlName="quantity"></td>
+              <td>
+                <!-- price here-->
+              </td>
+              <td><button class="btn btn-warning" (click)="deleteProduct(i)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
