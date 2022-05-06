@@ -1,0 +1,12 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <h1>Please select</h1>
+      <app-inventory [inventory]="inventory" (notifyApp)="pushToCart($event)"></app-inventory>
+    </div>
+    <div class="col">
+      <h1>My Cart</h1>
+      <app-cart [cart]="cart" (deleteCartItem)="deleteMap($event)"></app-cart>
+    </div>
+  </div>
+</div>
